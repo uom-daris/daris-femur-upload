@@ -1,0 +1,6 @@
+Completed:
+100 micrometre sections
+
+
+Except: 
+100 micrometre sections/Tiles Spot camera/3mm_circle.roi
