@@ -21,7 +21,7 @@ public class ProjectUtil {
             System.out.println("found project asset " + projectCid + ". Skip.");
             return projectCid;
         }
-        
+
         XmlStringWriter w = new XmlStringWriter();
         if (projectCid == null) {
             w.add("cid-root-name", CID_ROOT_NAME);
@@ -45,8 +45,9 @@ public class ProjectUtil {
             cxn.execute("om.pssd.project.update", w.document(), null, null);
             System.out.println("done");
         }
-        
-        System.out.print("adding project attachment: " + masterSpreadsheetFile.getAbsolutePath() + "...");
+
+        System.out.print("adding project attachment: "
+                + masterSpreadsheetFile.getAbsolutePath() + "...");
         ObjectUtil.addAttachment(cxn, projectCid, masterSpreadsheetFile,
                 update);
         System.out.println("done.");
@@ -65,6 +66,11 @@ public class ProjectUtil {
                         + name + "'");
         return cxn.execute("asset.query", w.document(), null, null)
                 .value("cid");
+    }
+
+    public static String findProject(ServerClient.Connection cxn)
+            throws Throwable {
+        return findProject(cxn, Constants.PROJECT_NAME);
     }
 
     public static void createTagDictionaries(ServerClient.Connection cxn,

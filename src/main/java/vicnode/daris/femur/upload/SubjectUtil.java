@@ -56,7 +56,8 @@ public class SubjectUtil {
         }
         w.pop();
         w.pop();
-        System.out.print((create? "creating" : "updating") + " subject asset " + (create ? "...": (subjectCid + "...")));
+        System.out.print((create ? "creating" : "updating") + " subject asset "
+                + (create ? "..." : (subjectCid + "...")));
         XmlDoc.Element re = cxn.execute(
                 create ? "om.pssd.subject.create" : "om.pssd.subject.update",
                 w.document());
@@ -87,14 +88,24 @@ public class SubjectUtil {
     public static String findSubject(ServerClient.Connection cxn,
             String projectCid, MasterSpreadsheet.SubjectRecord record)
                     throws Throwable {
+        return findSubject(cxn, projectCid, record.specimenNo[0]);
+    }
+
+    public static String findSubject(ServerClient.Connection cxn,
+            String projectCid, int specimenNo) throws Throwable {
         XmlStringWriter w = new XmlStringWriter();
         StringBuilder where = new StringBuilder().append("cid in '")
                 .append(projectCid)
                 .append("' and xpath(vicnode.daris:femur-subject/specimen-number) as string='")
-                .append(record.specimenNo[0]).append("'");
+                .append(specimenNo).append("'");
         w.add("where", where.toString());
         w.add("action", "get-cid");
         return cxn.execute("asset.query", w.document()).value("cid");
+    }
+
+    public static String findSubject(ServerClient.Connection cxn,
+            int specimenNo) throws Throwable {
+        return findSubject(cxn, ProjectUtil.findProject(cxn), specimenNo);
     }
 
 }

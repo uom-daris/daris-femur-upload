@@ -49,7 +49,11 @@ public class MasterSpreadsheet
 
     public SubjectRecord getRecord(String specimenNo) {
         for (SubjectRecord record : _records) {
-            if (ObjectUtil.equals(record.specimenNoString(), specimenNo)) {
+            String s = record.specimenNoString();
+            if (ObjectUtil.equals(s, specimenNo)
+                    || s.startsWith(specimenNo + "/")
+                    || s.indexOf("/" + specimenNo + "/") > 0
+                    || s.endsWith("/" + specimenNo)) {
                 return record;
             }
         }
@@ -115,7 +119,15 @@ public class MasterSpreadsheet
             sex = readSex(row, 3);
             height = readFloatCellValue(row, 4);
             weight = readFloatCellValue(row, 5);
-            specimenType = readStringCellValue(row, 6);
+            String st = readStringCellValue(row, 6);
+            if (st != null) {
+                if (st.startsWith("OA")) {
+                    st = "OA" + st.substring(2).toLowerCase();
+                } else {
+                    st = st.toLowerCase();
+                }
+            }
+            specimenType = st;
             blood = readBooleanCellValue(row, 7, false);
             hardGroundSections = readBooleanCellValue(row, 8, false);
             microradiographs = readBooleanCellValue(row, 9, false);
@@ -127,7 +139,8 @@ public class MasterSpreadsheet
             microCT = readBooleanCellValue(row, 15, false);
             midShaftPorosityAndCrossSectionalGeometryData = readBooleanCellValue(
                     row, 16, false);
-            autopsyReportOrMedicalQuestionnaire = readBooleanCellValue(row, 17, false);
+            autopsyReportOrMedicalQuestionnaire = readBooleanCellValue(row, 17,
+                    false);
             columnS = readIntegerCellValue(row, 18);
         }
 
@@ -253,7 +266,8 @@ public class MasterSpreadsheet
             }
         }
 
-        private static boolean readBooleanCellValue(HSSFRow row, int colIndex, boolean defaultValue) {
+        private static boolean readBooleanCellValue(HSSFRow row, int colIndex,
+                boolean defaultValue) {
             HSSFCell cell = row.getCell(colIndex);
             if (cell == null) {
                 return defaultValue;
