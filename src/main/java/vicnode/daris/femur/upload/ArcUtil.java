@@ -2,6 +2,7 @@ package vicnode.daris.femur.upload;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.util.Arrays;
 
 import arc.archive.ArchiveOutput;
 import arc.archive.ArchiveRegistry;
@@ -25,20 +26,20 @@ public class ArcUtil {
         }
     }
 
-    public static void arcDir(File dir, boolean recursive, File outFile,
-            ArcType type) throws Throwable {
+    public static void arcDir(File dir, boolean sort, boolean recursive,
+            File outFile, ArcType type) throws Throwable {
         Archive.declareSupportForAllTypes();
         ArchiveOutput output = ArchiveRegistry.createOutput(outFile,
                 type.mimeType(), 6, null);
         try {
-            arcDir(dir, recursive, output);
+            arcDir(dir, sort, recursive, output);
         } finally {
             output.close();
         }
     }
 
-    public static void arcDir(File dir, boolean recursive, ArchiveOutput output)
-            throws Throwable {
+    public static void arcDir(File dir, boolean sort, boolean recursive,
+            ArchiveOutput output) throws Throwable {
         arc(dir.listFiles(new FileFilter() {
 
             @Override
@@ -49,12 +50,14 @@ public class ArcUtil {
                     return f.isFile() && !f.getName().equals(".DS_Store");
                 }
             }
-        }), dir.getAbsolutePath(), output);
+        }), sort, dir.getAbsolutePath(), output);
     }
 
-    private static void arc(File[] files, String baseDir, ArchiveOutput output)
-            throws Throwable {
-
+    private static void arc(File[] files, boolean sort, String baseDir,
+            ArchiveOutput output) throws Throwable {
+        if (sort) {
+            Arrays.sort(files);
+        }
         for (File f : files) {
             String name = f.getAbsolutePath();
             if (name.startsWith(baseDir)) {
@@ -64,7 +67,7 @@ public class ArcUtil {
                 name = name.substring(1);
             }
             if (f.isDirectory()) {
-                arc(f.listFiles(), baseDir, output);
+                arc(f.listFiles(), sort, baseDir, output);
             } else {
                 System.out.println("Adding " + f.getAbsolutePath());
                 output.add(null, name, f);

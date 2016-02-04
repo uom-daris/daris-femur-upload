@@ -211,7 +211,7 @@ public class DatasetUtil {
                                     : arcType.mimeType(),
                             6, null);
                     try {
-                        ArcUtil.arcDir(f, recursive, ao);
+                        ArcUtil.arcDir(f, true, recursive, ao);
                     } finally {
                         ao.close();
                     }
