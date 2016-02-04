@@ -323,7 +323,7 @@ public class CreateStudyAndDatasets {
         // DOING
         uploadSpring8Sept2008Datasets(
                 new File(
-                        "/Users/wliu5/Femur/APS_March_2007__SP-8_07-2006_and_11-2007/SPring-8 Sept 2008"),
-                "mfc590a");
+                        args[0]),
+                args[1]);
     }
 }
