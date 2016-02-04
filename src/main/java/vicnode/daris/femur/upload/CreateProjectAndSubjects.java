@@ -9,14 +9,15 @@ import vicnode.daris.femur.upload.MasterSpreadsheet.SubjectRecord;
 public class CreateProjectAndSubjects {
 
     public static void main(String[] args) throws Throwable {
-        RemoteServer server = new RemoteServer(Constants.HOST, Constants.PORT,
-                true, Constants.SSL);
+        RemoteServer server = new RemoteServer(Configuration.host(),
+                Configuration.port(), true, Configuration.ssl());
         ServerClient.Connection cxn = null;
         try {
             cxn = server.open();
-            cxn.connect(Constants.DOMAIN, Constants.USER, Constants.PASSWORD);
+            cxn.connect(Configuration.domain(), Configuration.user(),
+                    Configuration.password());
             File masterSpreadsheetFile = new File(
-                    Constants.MASTER_SPREADSHEET_FILE_PATH);
+                    Configuration.masterSpreadsheetPath());
             createOrUpdateProjectAndSubjects(cxn, masterSpreadsheetFile, true);
         } finally {
             if (cxn != null) {
@@ -33,7 +34,7 @@ public class CreateProjectAndSubjects {
          */
         System.out.print("creating/updating project...");
         String projectCid = ProjectUtil.createProject(cxn,
-                Constants.PROJECT_NAME, Constants.PROJECT_DESCRIPTION,
+                Configuration.projectName(), Configuration.projectDescription(),
                 masterSpreadsheetFile, true);
         System.out.println("done.");
         System.out.print("reading master spreadsheet: "

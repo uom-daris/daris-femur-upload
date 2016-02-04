@@ -70,7 +70,7 @@ public class ProjectUtil {
 
     public static String findProject(ServerClient.Connection cxn)
             throws Throwable {
-        return findProject(cxn, Constants.PROJECT_NAME);
+        return findProject(cxn, Configuration.projectName());
     }
 
     public static void createTagDictionaries(ServerClient.Connection cxn,

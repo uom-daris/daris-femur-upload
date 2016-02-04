@@ -17,7 +17,7 @@ public class LocalFileSystem {
 
     public static MasterSpreadsheet getMasterSpreadsheet() throws Throwable {
         return new MasterSpreadsheet(
-                new File(Constants.MASTER_SPREADSHEET_FILE_PATH));
+                new File(Configuration.masterSpreadsheetPath()));
     }
 
 }

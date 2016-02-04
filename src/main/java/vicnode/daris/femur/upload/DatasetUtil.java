@@ -22,7 +22,7 @@ public class DatasetUtil {
             String type, String ctype, String lctype, boolean fillin,
             String filename, String methodId, String methodStep, String source,
             String[] tags, String femurSpecimenType, String femurImageType,
-            File f) throws Throwable {
+            File f, boolean recursive, ArcType arcType) throws Throwable {
         XmlStringWriter w = new XmlStringWriter();
         w.add("pid", pid);
         if (inputDatasets != null) {
@@ -77,7 +77,7 @@ public class DatasetUtil {
         }
         ServerClient.Input sci = null;
         if (f != null) {
-            sci = createInput(f, Constants.ARC_TYPE, source);
+            sci = createInput(f, recursive, arcType, source);
         }
         String cid = cxn.execute("om.pssd.dataset.derivation.create",
                 w.document(), sci, null).value("id");
@@ -93,8 +93,8 @@ public class DatasetUtil {
             String pid, String name, String description, String type,
             String ctype, String lctype, boolean fillin, String filename,
             String methodId, String methodStep, String source, String[] tags,
-            String femurSpecimenType, String femurImageType, File f)
-                    throws Throwable {
+            String femurSpecimenType, String femurImageType, File f,
+            boolean recursive, ArcType arcType) throws Throwable {
         XmlStringWriter w = new XmlStringWriter();
         w.add("pid", pid);
         w.push("subject");
@@ -115,9 +115,7 @@ public class DatasetUtil {
         if (lctype != null) {
             w.add("lctype", lctype);
         }
-        if (fillin) {
-            w.add("fillin", fillin);
-        }
+        w.add("fillin", fillin);
         if (filename != null) {
             w.add("filename", filename);
         }
@@ -146,7 +144,7 @@ public class DatasetUtil {
         }
         ServerClient.Input sci = null;
         if (f != null) {
-            sci = createInput(f, Constants.ARC_TYPE, source);
+            sci = createInput(f, recursive, arcType, source);
         }
         String cid = cxn.execute("om.pssd.dataset.primary.create", w.document(),
                 sci, null).value("id");
@@ -176,8 +174,8 @@ public class DatasetUtil {
         return cxn.execute("asset.query", w.document()).value("cid");
     }
 
-    private static ServerClient.Input createInput(File f, ArcType arcType,
-            String source) throws Throwable {
+    private static ServerClient.Input createInput(File f, boolean recursive,
+            ArcType arcType, String source) throws Throwable {
         String mimeType = null;
         String ext = null;
         if (f.isDirectory()) {
@@ -213,7 +211,7 @@ public class DatasetUtil {
                                     : arcType.mimeType(),
                             6, null);
                     try {
-                        ArcUtil.arcDir(f, ao);
+                        ArcUtil.arcDir(f, recursive, ao);
                     } finally {
                         ao.close();
                     }

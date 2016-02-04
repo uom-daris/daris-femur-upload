@@ -1,7 +1,7 @@
 package vicnode.daris.femur.upload;
 
 import java.io.File;
-import java.io.FilenameFilter;
+import java.io.FileFilter;
 
 import arc.archive.ArchiveOutput;
 import arc.archive.ArchiveRegistry;
@@ -19,30 +19,35 @@ public class ArcUtil {
                 return "application/zip";
             }
         }
-        
-        public String ext(){
+
+        public String ext() {
             return this.name().toLowerCase();
         }
     }
 
-    public static void arcDir(File dir, File outFile, ArcType type)
-            throws Throwable {
+    public static void arcDir(File dir, boolean recursive, File outFile,
+            ArcType type) throws Throwable {
         Archive.declareSupportForAllTypes();
         ArchiveOutput output = ArchiveRegistry.createOutput(outFile,
                 type.mimeType(), 6, null);
         try {
-            arcDir(dir, output);
+            arcDir(dir, recursive, output);
         } finally {
             output.close();
         }
     }
 
-    public static void arcDir(File dir, ArchiveOutput output) throws Throwable {
-        arc(dir.listFiles(new FilenameFilter() {
+    public static void arcDir(File dir, boolean recursive, ArchiveOutput output)
+            throws Throwable {
+        arc(dir.listFiles(new FileFilter() {
 
             @Override
-            public boolean accept(File dir, String name) {
-                return !name.equals(".DS_Store");
+            public boolean accept(File f) {
+                if (recursive) {
+                    return !f.getName().equals(".DS_Store");
+                } else {
+                    return f.isFile() && !f.getName().equals(".DS_Store");
+                }
             }
         }), dir.getAbsolutePath(), output);
     }
@@ -61,6 +66,7 @@ public class ArcUtil {
             if (f.isDirectory()) {
                 arc(f.listFiles(), baseDir, output);
             } else {
+                System.out.println("Adding " + f.getAbsolutePath());
                 output.add(null, name, f);
             }
         }

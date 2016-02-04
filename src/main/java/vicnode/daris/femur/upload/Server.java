@@ -10,10 +10,11 @@ public class Server {
 
     public static ServerClient.Connection connect() throws Throwable {
         if (_cxn == null) {
-            _server = new RemoteServer(Constants.HOST, Constants.PORT, true,
-                    Constants.SSL);
+            _server = new RemoteServer(Configuration.host(), Configuration.port(), true,
+                    Configuration.ssl());
             _cxn = _server.open();
-            _cxn.connect(Constants.DOMAIN, Constants.USER, Constants.PASSWORD);
+            _cxn.connect(Configuration.domain(), Configuration.user(),
+                    Configuration.password());
         }
         return _cxn;
     }

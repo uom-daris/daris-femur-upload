@@ -8,14 +8,15 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 import arc.mf.client.ServerClient;
+import vicnode.daris.femur.upload.ArcUtil.ArcType;
 
 public class CreateStudyAndDatasets {
 
-    private static void distributePICT() throws Throwable {
+    static void distributePICT() throws Throwable {
         File rootDir = new File(
-                Constants.ROOT + "/" + Constants.Tiles_100µm_Sony);
-        File imagesDir = new File(
-                Constants.ROOT + "/" + Constants.Tiles_100µm_Sony + "/IMAGES");
+                Configuration.root() + "/" + Configuration.tiles100umSony());
+        File imagesDir = new File(Configuration.root() + "/"
+                + Configuration.tiles100umSony() + "/IMAGES");
         File[] imageFiles = imagesDir.listFiles(new FilenameFilter() {
 
             @Override
@@ -49,7 +50,7 @@ public class CreateStudyAndDatasets {
 
     public static void upload100umSonyDatasets() throws Throwable {
         File rootDir = new File(
-                Constants.ROOT + "/" + Constants.Tiles_100µm_Sony);
+                Configuration.root() + "/" + Configuration.tiles100umSony());
         File[] dirs = rootDir.listFiles(new FilenameFilter() {
 
             @Override
@@ -101,7 +102,7 @@ public class CreateStudyAndDatasets {
                     + specimenNo);
         }
         String exMethodCid = subjectCid + ".1";
-        String source = LocalFileSystem.trimRoot(Constants.ROOT, dir);
+        String source = LocalFileSystem.trimRoot(Configuration.root(), dir);
         String datasetCid = DatasetUtil.findDatasetBySource(cxn, subjectCid,
                 source);
         if (datasetCid != null) {
@@ -113,20 +114,23 @@ public class CreateStudyAndDatasets {
                 "100µm Tiles Sony Camera", "100µm Tiles Sony Camera", record,
                 null);
         System.out.println("Created study: " + studyCid + ".");
-        datasetCid = DatasetUtil.createDerivedDataset(cxn, studyCid, null, null,
-                "100 micrometre tiles sony camera", "tiff/series",
-                Constants.ARC_TYPE.mimeType(), null, true,
-                "100µm_tiles_sony_camera-" + name + ".zip", exMethodCid, "1",
-                source,
-                new String[] { "microradiography", record.specimenType },
-                record.specimenType, "microradiography", dir);
+        datasetCid = DatasetUtil
+                .createDerivedDataset(cxn, studyCid, null, null,
+                        "100 micrometre tiles sony camera", "tiff/series",
+                        ArcType.zip.mimeType(), null, true,
+                        "100µm_tiles_sony_camera-" + name + ".zip", exMethodCid,
+                        "1", source,
+                        new String[] { "microradiography",
+                                record.specimenType },
+                        record.specimenType, "microradiography", dir, true,
+                        ArcType.zip);
         System.out.println(
                 "Created dataset: " + datasetCid + " from " + source + ".");
     }
 
     public static void upload100umSpotDatasets() throws Throwable {
         File rootDir = new File(
-                Constants.ROOT + "/" + Constants.Tiles_100µm_Spot);
+                Configuration.root() + "/" + Configuration.tiles100umSpot());
         File[] dirs = rootDir.listFiles(new FileFilter() {
 
             @Override
@@ -181,7 +185,7 @@ public class CreateStudyAndDatasets {
                     + specimenNo);
         }
         String exMethodCid = subjectCid + ".1";
-        String source = LocalFileSystem.trimRoot(Constants.ROOT, dir);
+        String source = LocalFileSystem.trimRoot(Configuration.root(), dir);
         String datasetCid = DatasetUtil.findDatasetBySource(cxn, subjectCid,
                 source);
         if (datasetCid != null) {
@@ -193,20 +197,133 @@ public class CreateStudyAndDatasets {
                 "100µm Tiles Spot Camera", "100µm Tiles Spot Camera", record,
                 null);
         System.out.println("Created study: " + studyCid + ".");
-        datasetCid = DatasetUtil.createDerivedDataset(cxn, studyCid, null, null,
-                "100 micrometre tiles spot camera", "tiff/series",
-                Constants.ARC_TYPE.mimeType(), null, true,
-                "100µm_tiles_spot_camera-" + name + ".zip", exMethodCid, "1",
-                source,
-                new String[] { "microradiography", record.specimenType },
-                record.specimenType, "microradiography", dir);
+        datasetCid = DatasetUtil
+                .createDerivedDataset(cxn, studyCid, null, null,
+                        "100 micrometre tiles spot camera", "tiff/series",
+                        ArcType.zip.mimeType(), null, true,
+                        "100µm_tiles_spot_camera-" + name + ".zip", exMethodCid,
+                        "1", source,
+                        new String[] { "microradiography",
+                                record.specimenType },
+                        record.specimenType, "microradiography", dir, true,
+                        ArcType.zip);
         System.out.println(
                 "Created dataset: " + datasetCid + " from " + source + ".");
     }
 
+    public static void uploadSpring8Sept2008Datasets(int specimenNo,
+            String name, File dirPrimary, String namePrimary,
+            File dirReconstructed, String nameReconstructed) throws Throwable {
+        String sourcePrimary = LocalFileSystem.trimRoot(Configuration.root(),
+                dirPrimary);
+        String sourceReconstructed = LocalFileSystem.trimRoot(Configuration.root(),
+                dirReconstructed);
+
+        MasterSpreadsheet sheet = LocalFileSystem.getMasterSpreadsheet();
+        MasterSpreadsheet.SubjectRecord record = sheet.getRecord(specimenNo);
+        assert record != null;
+        ServerClient.Connection cxn = Server.connect();
+        try {
+            String subjectCid = SubjectUtil.findSubject(cxn, specimenNo);
+            if (subjectCid == null) {
+                throw new Exception(
+                        "Could not find subject with specimen number: "
+                                + specimenNo);
+            }
+            String exMethodCid = subjectCid + ".1";
+            /*
+             * check if datasets exist
+             */
+            String primaryDatasetCid = DatasetUtil.findDatasetBySource(cxn,
+                    subjectCid, sourcePrimary);
+            String reconstructedDatasetCid = DatasetUtil
+                    .findDatasetBySource(cxn, subjectCid, sourceReconstructed);
+            if (primaryDatasetCid != null && reconstructedDatasetCid != null) {
+                System.out.println("Primary Dataset(cid: " + primaryDatasetCid
+                        + ") from " + sourcePrimary + " already exists.");
+                System.out.println("Reconstructed Dataset(cid: "
+                        + reconstructedDatasetCid + ") from "
+                        + sourceReconstructed + " already exists.");
+                return;
+            }
+            /*
+             * create / find study
+             */
+            String studyName = "Spring8 Sept 2008";
+            String studyCid = StudyUtil.findOrCreateStudy(cxn, exMethodCid, "2",
+                    studyName, studyName + " - " + name.toLowerCase(), record,
+                    new String[] { "Clinical CT", "microCT" });
+            System.out.println("Created/Found study " + studyCid);
+            /*
+             * create primary dataset
+             */
+            if (primaryDatasetCid == null) {
+                System.out.println("Uploading primary dataset: from "
+                        + sourcePrimary + ".");
+                primaryDatasetCid = DatasetUtil.createPrimaryDataset(cxn,
+                        studyCid, namePrimary,
+                        "Spring8 raw data in Hipic format", "hipic/series",
+                        ArcType.aar.mimeType(), null, true,
+                        "Spring8_Sept_2008-" + name.toLowerCase() + ".aar",
+                        exMethodCid, "2", sourcePrimary,
+                        new String[] { "Clinical CT", "microCT",
+                                record.specimenType },
+                        record.specimenType, "microCT", dirPrimary, false,
+                        ArcType.aar);
+                System.out.println("Created primary dataset: "
+                        + primaryDatasetCid + " from " + sourcePrimary + ".");
+            }
+            /*
+             * create reconstructed dataset
+             */
+            if (reconstructedDatasetCid == null) {
+                System.out.println("Uploading reconstructed dataset: from "
+                        + sourceReconstructed + ".");
+                reconstructedDatasetCid = DatasetUtil.createDerivedDataset(cxn,
+                        studyCid, new String[] { primaryDatasetCid },
+                        nameReconstructed,
+                        "Reconstructed Spring8 data in TIFF format",
+                        "tiff/series", ArcType.aar.mimeType(), null, true,
+                        "Spring8_Sept_2008-" + name + "-Reconstructed.aar",
+                        exMethodCid, "2", sourceReconstructed,
+                        new String[] { "Clinical CT", "microCT",
+                                record.specimenType },
+                        record.specimenType, "microCT", dirReconstructed, true,
+                        ArcType.aar);
+                System.out.println("Created reconstructed dataset: "
+                        + reconstructedDatasetCid + " from "
+                        + sourceReconstructed + ".");
+            }
+        } finally {
+            Server.disconnect();
+        }
+    }
+
+    public static void uploadSpring8Sept2008Datasets(String name,
+            File dirPrimary, File dirReconstructed) throws Throwable {
+        int specimenNo = Integer.parseInt(StringUtil.trimNonDigits(name));
+        uploadSpring8Sept2008Datasets(specimenNo, name, dirPrimary,
+                "Spring8 Raw - " + name, dirReconstructed,
+                "Spring8 Reconstructed - " + name);
+    }
+
+    public static void uploadSpring8Sept2008Datasets(File parent, String name)
+            throws Throwable {
+        File dirPrimary = new File(parent, name);
+        File dirReconstructed = new File(dirPrimary, "Reconstructed sections");
+        uploadSpring8Sept2008Datasets(name, dirPrimary, dirReconstructed);
+    }
+
     public static void main(String[] args) throws Throwable {
-        distributePICT();
-        upload100umSonyDatasets();
-        upload100umSpotDatasets();
+        // DONE
+        // distributePICT();
+        // upload100umSonyDatasets();
+        // upload100umSpotDatasets();
+
+        // DOING
+        uploadSpring8Sept2008Datasets(
+                new File(
+                        "/Users/wliu5/Femur/APS_March_2007__SP-8_07-2006_and_11-2007/SPring-8 Sept 2008"),
+                "mfc590a");
     }
 }
