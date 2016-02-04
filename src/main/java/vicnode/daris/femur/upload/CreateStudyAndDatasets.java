@@ -216,8 +216,8 @@ public class CreateStudyAndDatasets {
             File dirReconstructed, String nameReconstructed) throws Throwable {
         String sourcePrimary = LocalFileSystem.trimRoot(Configuration.root(),
                 dirPrimary);
-        String sourceReconstructed = LocalFileSystem.trimRoot(Configuration.root(),
-                dirReconstructed);
+        String sourceReconstructed = LocalFileSystem
+                .trimRoot(Configuration.root(), dirReconstructed);
 
         MasterSpreadsheet sheet = LocalFileSystem.getMasterSpreadsheet();
         MasterSpreadsheet.SubjectRecord record = sheet.getRecord(specimenNo);
@@ -311,6 +311,9 @@ public class CreateStudyAndDatasets {
             throws Throwable {
         File dirPrimary = new File(parent, name);
         File dirReconstructed = new File(dirPrimary, "Reconstructed sections");
+        if (!dirReconstructed.exists()) {
+            dirReconstructed = new File(dirPrimary, "reconstructed sections");
+        }
         uploadSpring8Sept2008Datasets(name, dirPrimary, dirReconstructed);
     }
 
@@ -321,9 +324,6 @@ public class CreateStudyAndDatasets {
         // upload100umSpotDatasets();
 
         // DOING
-        uploadSpring8Sept2008Datasets(
-                new File(
-                        args[0]),
-                args[1]);
+        uploadSpring8Sept2008Datasets(new File(args[0]), args[1]);
     }
 }
