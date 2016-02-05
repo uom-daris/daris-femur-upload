@@ -32,8 +32,8 @@ public class CreateDatasetPair {
             }
         });
         for (File recDir : recDirs) {
-            String datasetName = "Spring8 " + recDir.getName().toLowerCase()
-                    + " - " + dir.getName().toLowerCase();
+            String datasetName = "Spring8 Reconstructed" + " - "
+                    + dir.getName().toLowerCase();
             CreateStudyAndDatasets.uploadDerivedDataset(recDir, true,
                     specimenNo, "2", studyName, studyTags, datasetName,
                     datasetName + " in tiff format.", "tiff/series", arcType,
