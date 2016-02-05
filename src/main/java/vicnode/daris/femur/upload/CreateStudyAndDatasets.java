@@ -119,7 +119,7 @@ public class CreateStudyAndDatasets {
         datasetCid = DatasetUtil
                 .createDerivedDataset(cxn, studyCid, null, null,
                         "100 micrometre tiles sony camera", "tiff/series",
-                        ArcType.zip.mimeType(), null, true,
+                        ArcType.zip.mimeType(), null,
                         "100µm_tiles_sony_camera-" + name + ".zip", exMethodCid,
                         "1", source,
                         new String[] { "microradiography",
@@ -202,7 +202,7 @@ public class CreateStudyAndDatasets {
         datasetCid = DatasetUtil
                 .createDerivedDataset(cxn, studyCid, null, null,
                         "100 micrometre tiles spot camera", "tiff/series",
-                        ArcType.zip.mimeType(), null, true,
+                        ArcType.zip.mimeType(), null,
                         "100µm_tiles_spot_camera-" + name + ".zip", exMethodCid,
                         "1", source,
                         new String[] { "microradiography",
@@ -265,7 +265,7 @@ public class CreateStudyAndDatasets {
                 primaryDatasetCid = DatasetUtil.createPrimaryDataset(cxn,
                         studyCid, namePrimary,
                         "Spring8 raw data in Hipic format", "hipic/series",
-                        ArcType.aar.mimeType(), null, true,
+                        ArcType.aar.mimeType(), null,
                         "Spring8_Sept_2008-" + name.toLowerCase() + ".aar",
                         exMethodCid, "2", sourcePrimary,
                         new String[] { "Clinical CT", "microCT",
@@ -285,7 +285,7 @@ public class CreateStudyAndDatasets {
                         studyCid, new String[] { primaryDatasetCid },
                         nameReconstructed,
                         "Reconstructed Spring8 data in TIFF format",
-                        "tiff/series", ArcType.aar.mimeType(), null, true,
+                        "tiff/series", ArcType.aar.mimeType(), null,
                         "Spring8_Sept_2008-" + name + "-Reconstructed.aar",
                         exMethodCid, "2", sourceReconstructed,
                         new String[] { "Clinical CT", "microCT",
@@ -373,8 +373,8 @@ public class CreateStudyAndDatasets {
             }
             datasetCid = DatasetUtil.createPrimaryDataset(cxn, studyCid,
                     datasetName, datasetDescription, mimeType,
-                    arcType.mimeType(), null, true, filename, exMethodCid,
-                    methodStep, source, tags.toArray(new String[tags.size()]),
+                    arcType.mimeType(), null, filename, exMethodCid, methodStep,
+                    source, tags.toArray(new String[tags.size()]),
                     record.specimenType, imageType, datasetDir, recursive,
                     arcType);
             System.out.println("Created primary dataset: " + datasetCid
@@ -440,10 +440,10 @@ public class CreateStudyAndDatasets {
                     .println("Uploading derived dataset: from " + source + ".");
             datasetCid = DatasetUtil.createDerivedDataset(cxn, studyCid,
                     new String[] { input }, datasetName, datasetDescription,
-                    mimeType, arcType.mimeType(), null, true, filename,
-                    exMethodCid, methodStep, source,
-                    tags.toArray(new String[tags.size()]), record.specimenType,
-                    imageType, datasetDir, recursive, arcType);
+                    mimeType, arcType.mimeType(), null, filename, exMethodCid,
+                    methodStep, source, tags.toArray(new String[tags.size()]),
+                    record.specimenType, imageType, datasetDir, recursive,
+                    arcType);
             System.out.println("Created derived dataset: " + datasetCid
                     + " from " + source + ".");
             return datasetCid;

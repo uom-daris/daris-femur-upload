@@ -19,10 +19,10 @@ public class DatasetUtil {
 
     public static String createDerivedDataset(ServerClient.Connection cxn,
             String pid, String[] inputDatasets, String name, String description,
-            String type, String ctype, String lctype, boolean fillin,
-            String filename, String methodId, String methodStep, String source,
-            String[] tags, String femurSpecimenType, String femurImageType,
-            File f, boolean recursive, ArcType arcType) throws Throwable {
+            String type, String ctype, String lctype, String filename,
+            String methodId, String methodStep, String source, String[] tags,
+            String femurSpecimenType, String femurImageType, File f,
+            boolean recursive, ArcType arcType) throws Throwable {
         XmlStringWriter w = new XmlStringWriter();
         w.add("pid", pid);
         if (inputDatasets != null) {
@@ -46,9 +46,7 @@ public class DatasetUtil {
         if (lctype != null) {
             w.add("lctype", lctype);
         }
-        if (fillin) {
-            w.add("fillin", fillin);
-        }
+        w.add("fillin", true);
         if (filename != null) {
             w.add("filename", filename);
         }
@@ -91,8 +89,8 @@ public class DatasetUtil {
 
     public static String createPrimaryDataset(ServerClient.Connection cxn,
             String pid, String name, String description, String type,
-            String ctype, String lctype, boolean fillin, String filename,
-            String methodId, String methodStep, String source, String[] tags,
+            String ctype, String lctype, String filename, String methodId,
+            String methodStep, String source, String[] tags,
             String femurSpecimenType, String femurImageType, File f,
             boolean recursive, ArcType arcType) throws Throwable {
         XmlStringWriter w = new XmlStringWriter();
@@ -115,7 +113,7 @@ public class DatasetUtil {
         if (lctype != null) {
             w.add("lctype", lctype);
         }
-        w.add("fillin", fillin);
+        w.add("fillin", true);
         if (filename != null) {
             w.add("filename", filename);
         }
