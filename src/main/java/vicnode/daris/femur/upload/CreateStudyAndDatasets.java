@@ -6,6 +6,8 @@ import java.io.FilenameFilter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.HashSet;
+import java.util.Set;
 
 import arc.mf.client.ServerClient;
 import vicnode.daris.femur.upload.ArcUtil.ArcType;
@@ -317,13 +319,167 @@ public class CreateStudyAndDatasets {
         uploadSpring8Sept2008Datasets(name, dirPrimary, dirReconstructed);
     }
 
-    public static void main(String[] args) throws Throwable {
-        // DONE
-        // distributePICT();
-        // upload100umSonyDatasets();
-        // upload100umSpotDatasets();
+    public static String uploadPrimaryDataset(File datasetDir,
+            boolean recursive, int specimenNo, String methodStep,
+            String studyName, String[] studyTags, String datasetName,
+            String datasetDescription, String mimeType, ArcType arcType,
+            String[] datasetTags, String imageType) throws Throwable {
+        String source = LocalFileSystem.trimRoot(Configuration.root(),
+                datasetDir);
+        MasterSpreadsheet sheet = LocalFileSystem.getMasterSpreadsheet();
+        MasterSpreadsheet.SubjectRecord record = sheet.getRecord(specimenNo);
+        assert record != null;
+        ServerClient.Connection cxn = Server.connect();
+        try {
+            String subjectCid = SubjectUtil.findSubject(cxn, specimenNo);
+            if (subjectCid == null) {
+                throw new Exception(
+                        "Could not find subject with specimen number: "
+                                + specimenNo);
+            }
+            String exMethodCid = subjectCid + ".1";
+            /*
+             * check if datasets exist
+             */
+            String datasetCid = DatasetUtil.findDatasetBySource(cxn, subjectCid,
+                    source);
+            if (datasetCid != null) {
+                System.out.println("Primary Dataset(cid: " + datasetCid
+                        + ") from " + source + " already exists.");
+                return datasetCid;
+            }
+            /*
+             * create / find study
+             */
+            String studyCid = StudyUtil.findOrCreateStudy(cxn, exMethodCid,
+                    methodStep, studyName,
+                    studyName + " - " + datasetDir.getName().toLowerCase(),
+                    record, studyTags);
+            System.out.println("Created/Found study " + studyCid);
+            /*
+             * create primary dataset
+             */
+            System.out
+                    .println("Uploading primary dataset: from " + source + ".");
+            String filename = studyName + "-" + datasetDir.getName() + "."
+                    + arcType.ext();
+            filename = filename.replace(' ', '_');
+            Set<String> tags = new HashSet<String>();
+            tags.add(record.specimenType);
+            if (datasetTags != null) {
+                for (String dt : datasetTags) {
+                    tags.add(dt);
+                }
+            }
+            datasetCid = DatasetUtil.createPrimaryDataset(cxn, studyCid,
+                    datasetName, datasetDescription, mimeType,
+                    arcType.mimeType(), null, true, filename, exMethodCid,
+                    methodStep, source, tags.toArray(new String[tags.size()]),
+                    record.specimenType, imageType, datasetDir, recursive,
+                    arcType);
+            System.out.println("Created primary dataset: " + datasetCid
+                    + " from " + source + ".");
+            return datasetCid;
+        } finally {
+            Server.disconnect();
+        }
+    }
 
-        // DOING
-        uploadSpring8Sept2008Datasets(new File(args[0]), args[1]);
+    public static String uploadDerivedDataset(File datasetDir,
+            boolean recursive, int specimenNo, String methodStep,
+            String studyName, String[] studyTags, String datasetName,
+            String datasetDescription, String mimeType, ArcType arcType,
+            String[] datasetTags, String imageType, String input)
+                    throws Throwable {
+        String source = LocalFileSystem.trimRoot(Configuration.root(),
+                datasetDir);
+        MasterSpreadsheet sheet = LocalFileSystem.getMasterSpreadsheet();
+        MasterSpreadsheet.SubjectRecord record = sheet.getRecord(specimenNo);
+        assert record != null;
+        ServerClient.Connection cxn = Server.connect();
+        try {
+            String subjectCid = SubjectUtil.findSubject(cxn, specimenNo);
+            if (subjectCid == null) {
+                throw new Exception(
+                        "Could not find subject with specimen number: "
+                                + specimenNo);
+            }
+            String exMethodCid = subjectCid + ".1";
+            /*
+             * check if datasets exist
+             */
+            String datasetCid = DatasetUtil.findDatasetBySource(cxn, subjectCid,
+                    source);
+            if (datasetCid != null) {
+                System.out.println("Primary Dataset(cid: " + datasetCid
+                        + ") from " + source + " already exists.");
+                return datasetCid;
+            }
+            /*
+             * create / find study
+             */
+            String studyCid = StudyUtil.findOrCreateStudy(cxn, exMethodCid,
+                    methodStep, studyName,
+                    studyName + " - " + datasetDir.getName().toLowerCase(),
+                    record, studyTags);
+            System.out.println("Created/Found study " + studyCid);
+            /*
+             * create derived dataset
+             */
+            String filename = studyName + "-" + datasetDir.getName() + "."
+                    + arcType.ext();
+            filename = filename.replace(' ', '_');
+            Set<String> tags = new HashSet<String>();
+            tags.add(record.specimenType);
+            if (datasetTags != null) {
+                for (String dt : datasetTags) {
+                    tags.add(dt);
+                }
+            }
+            System.out
+                    .println("Uploading derived dataset: from " + source + ".");
+            datasetCid = DatasetUtil.createDerivedDataset(cxn, studyCid,
+                    new String[] { input }, datasetName, datasetDescription,
+                    mimeType, arcType.mimeType(), null, true, filename,
+                    exMethodCid, methodStep, source,
+                    tags.toArray(new String[tags.size()]), record.specimenType,
+                    imageType, datasetDir, recursive, arcType);
+            System.out.println("Created derived dataset: " + datasetCid
+                    + " from " + source + ".");
+            return datasetCid;
+        } finally {
+            Server.disconnect();
+        }
+    }
+
+    public static void main(String[] args) throws Throwable {
+        if (args.length != 12 && args.length != 13) {
+            System.out.println(
+                    "Usage: upload <dir> <recursive> <specimen-no> <method-step> <study-name> <study-tags> <name> <description> <mime-type> <atype> <tags> <image-type> [input-cid]");
+            System.exit(1);
+        }
+        File datasetDir = new File(args[0]);
+        boolean recursive = Boolean.parseBoolean(args[1]);
+        int specimenNo = Integer.parseInt(args[2]);
+        String methodStep = args[3];
+        String studyName = args[4];
+        String[] studyTags = args[5].split(",");
+        String datasetName = args[6];
+        String datasetDesc = args[7];
+        String mimeType = args[8];
+        ArcType arcType = args[9].equalsIgnoreCase("AAR") ? ArcType.aar
+                : ArcType.zip;
+        String[] datasetTags = args[10].split(",");
+        String imageType = args[11];
+        if (args.length > 12) {
+            String input = args[12];
+            uploadDerivedDataset(datasetDir, recursive, specimenNo, methodStep,
+                    studyName, studyTags, datasetName, datasetDesc, mimeType,
+                    arcType, datasetTags, imageType, input);
+        } else {
+            uploadPrimaryDataset(datasetDir, recursive, specimenNo, methodStep,
+                    studyName, studyTags, datasetName, datasetDesc, mimeType,
+                    arcType, datasetTags, imageType);
+        }
     }
 }
