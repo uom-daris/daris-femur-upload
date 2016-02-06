@@ -439,11 +439,11 @@ public class CreateStudyAndDatasets {
             System.out
                     .println("Uploading derived dataset: from " + source + ".");
             datasetCid = DatasetUtil.createDerivedDataset(cxn, studyCid,
-                    new String[] { input }, datasetName, datasetDescription,
-                    mimeType, arcType.mimeType(), null, filename, exMethodCid,
-                    methodStep, source, tags.toArray(new String[tags.size()]),
-                    record.specimenType, imageType, datasetDir, recursive,
-                    arcType);
+                    input == null ? null : new String[] { input }, datasetName,
+                    datasetDescription, mimeType, arcType.mimeType(), null,
+                    filename, exMethodCid, methodStep, source,
+                    tags.toArray(new String[tags.size()]), record.specimenType,
+                    imageType, datasetDir, recursive, arcType);
             System.out.println("Created derived dataset: " + datasetCid
                     + " from " + source + ".");
             return datasetCid;
@@ -473,6 +473,9 @@ public class CreateStudyAndDatasets {
         String imageType = args[11];
         if (args.length > 12) {
             String input = args[12];
+            if (input.equalsIgnoreCase("null")) {
+                input = null;
+            }
             uploadDerivedDataset(datasetDir, recursive, specimenNo, methodStep,
                     studyName, studyTags, datasetName, datasetDesc, mimeType,
                     arcType, datasetTags, imageType, input);
