@@ -58,8 +58,14 @@ public class ObjectUtil {
     public static void addObjectTag(ServerClient.Connection cxn, String cid,
             String tag) throws Throwable {
         cxn.execute("om.pssd.object.tag.add",
-                "<cid>" + cid + "</cid><tag><name>" + tag + "</name></tag>", null, null);
+                "<cid>" + cid + "</cid><tag><name>" + tag + "</name></tag>",
+                null, null);
 
     }
 
+    public static String assetIdFromCid(ServerClient.Connection cxn, String cid)
+            throws Throwable {
+        return cxn.execute("asset.get", "<cid>" + cid + "</cid>", null, null)
+                .value("asset/@id");
+    }
 }

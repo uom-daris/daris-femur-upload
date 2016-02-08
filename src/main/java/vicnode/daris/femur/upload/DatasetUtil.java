@@ -12,6 +12,7 @@ import arc.mf.client.ServerClient;
 import arc.mf.client.archive.Archive;
 import arc.streams.StreamCopy;
 import arc.streams.StreamCopy.AbortCheck;
+import arc.xml.XmlDoc;
 import arc.xml.XmlStringWriter;
 import vicnode.daris.femur.upload.ArcUtil.ArcType;
 
@@ -216,6 +217,13 @@ public class DatasetUtil {
                 }
             }
         };
+    }
+
+    public static XmlDoc.Element getDicomMetadata(ServerClient.Connection cxn,
+            String cid) throws Throwable {
+        String assetId = ObjectUtil.assetIdFromCid(cxn, cid);
+        return cxn.execute("dicom.metadata.get", "<id>" + assetId + "</id>",
+                null, null);
     }
 
 }

@@ -82,6 +82,76 @@ public class StudyUtil {
         return cid;
     }
 
+    public static void updateStudy(ServerClient.Connection cxn, String cid,
+            String name, String description,
+            MasterSpreadsheet.SubjectRecord record, String[] tags)
+                    throws Throwable {
+        XmlStringWriter w = new XmlStringWriter();
+        w.add("id", cid);
+        if (name != null) {
+            w.add("name", name);
+        }
+        if (description != null) {
+            w.add("description", description);
+        }
+        if (record != null) {
+            w.push("meta");
+            w.push("vicnode.daris:femur-study");
+            w.push("ingest");
+            w.add("date", new Date());
+            String[] ss = cxn.userId().split(":");
+            if (ss != null && ss.length == 2) {
+                w.add("domain", ss[0]);
+                w.add("user", ss[1]);
+            }
+            w.pop();
+            if (record.age != null || record.sex != null
+                    || record.height != null || record.weight != null) {
+                w.push("subject");
+                if (record.age != null) {
+                    w.add("age", record.age);
+                }
+                if (record.sex != null) {
+                    w.add("sex", record.sex);
+                }
+                if (record.height != null) {
+                    w.add("height", record.height);
+                }
+                if (record.weight != null) {
+                    w.add("weight", record.weight);
+                }
+                w.pop();
+            }
+            for (int n : record.specimenNo) {
+                w.add("specimen-number", n);
+            }
+            if (record.vifmCaseNo != null) {
+                w.add("vifm-case-number", record.vifmCaseNo);
+            }
+            if (record.specimenType != null) {
+                w.add("specimen-type", record.specimenType);
+            }
+            w.add("autopsy-report-or-medical-questionnaire",
+                    record.autopsyReportOrMedicalQuestionnaire);
+            w.add("blood", record.blood);
+            w.add("mid-shaft-porosity-and-cross-sectional-geometry-data",
+                    record.midShaftPorosityAndCrossSectionalGeometryData);
+            w.add("hard-ground-sections", record.hardGroundSections);
+            w.add("mounted-sections", record.mountedSections);
+            w.add("two-inch-glass-plates", record.twoInchGlassPlates);
+            w.add("plane-radio-graph-of-pelvis",
+                    record.plainRadiographOfPelvis);
+            w.pop();
+            w.pop();
+        }
+        cxn.execute("om.pssd.study.update", w.document());
+        if (tags != null) {
+            for (String tag : tags) {
+                ObjectUtil.addObjectTag(cxn, cid, tag);
+            }
+        }
+    }
+
     public static String findStudy(ServerClient.Connection cxn, String pid,
             String step, String name) throws Throwable {
         XmlStringWriter w = new XmlStringWriter();
