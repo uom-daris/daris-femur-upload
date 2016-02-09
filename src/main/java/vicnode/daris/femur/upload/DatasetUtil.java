@@ -47,7 +47,7 @@ public class DatasetUtil {
         if (lctype != null) {
             w.add("lctype", lctype);
         }
-        w.add("fillin", true);
+        w.add("fillin", false);
         if (filename != null) {
             w.add("filename", filename);
         }
