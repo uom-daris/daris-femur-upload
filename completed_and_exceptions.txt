@@ -2,6 +2,8 @@ Completed:
 100 micrometre sections
 APS_March_2007__SP-8_07-2006_and_11-2007/SPring-8 Sept 2008
 Cambridge Xtreme
+   - NOTE: missing study date (use acquisition data -> study date before dicom ingest).
+
 
 Except: 
 100 micrometre sections/Tiles Spot camera/3mm_circle.roi
