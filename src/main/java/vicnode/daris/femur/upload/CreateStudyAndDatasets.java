@@ -49,7 +49,7 @@ public class CreateStudyAndDatasets {
             /*
              * update study
              */
-            String studyCid = StudyUtil.findStudy(cxn, subjectCid, "2", null);
+            String studyCid = StudyUtil.findStudy(cxn, subjectCid + ".1", "2", null);
             StudyUtil.updateStudy(cxn, studyCid, studyName, studyName, record,
                     studyTags);
             System.out.println("Updated study " + studyCid);
