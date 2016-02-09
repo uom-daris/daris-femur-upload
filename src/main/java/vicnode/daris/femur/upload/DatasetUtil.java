@@ -23,7 +23,7 @@ public class DatasetUtil {
             String type, String ctype, String lctype, String filename,
             String methodId, String methodStep, String source, String[] tags,
             String femurSpecimenType, String femurImageType, File f,
-            boolean recursive, ArcType arcType) throws Throwable {
+            boolean recursive, ArcType arcType, boolean fillin) throws Throwable {
         XmlStringWriter w = new XmlStringWriter();
         w.add("pid", pid);
         if (inputDatasets != null) {
@@ -47,7 +47,7 @@ public class DatasetUtil {
         if (lctype != null) {
             w.add("lctype", lctype);
         }
-        w.add("fillin", false);
+        w.add("fillin", fillin);
         if (filename != null) {
             w.add("filename", filename);
         }

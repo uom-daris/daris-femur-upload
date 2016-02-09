@@ -125,7 +125,7 @@ public class CreateStudyAndDatasets01 {
                         new String[] { "microradiography",
                                 record.specimenType },
                         record.specimenType, "microradiography", dir, true,
-                        ArcType.zip);
+                        ArcType.zip, true);
         System.out.println(
                 "Created dataset: " + datasetCid + " from " + source + ".");
     }
@@ -208,7 +208,7 @@ public class CreateStudyAndDatasets01 {
                         new String[] { "microradiography",
                                 record.specimenType },
                         record.specimenType, "microradiography", dir, true,
-                        ArcType.zip);
+                        ArcType.zip, true);
         System.out.println(
                 "Created dataset: " + datasetCid + " from " + source + ".");
     }
@@ -291,7 +291,7 @@ public class CreateStudyAndDatasets01 {
                         new String[] { "Clinical CT", "microCT",
                                 record.specimenType },
                         record.specimenType, "microCT", dirReconstructed, true,
-                        ArcType.aar);
+                        ArcType.aar, true);
                 System.out.println("Created reconstructed dataset: "
                         + reconstructedDatasetCid + " from "
                         + sourceReconstructed + ".");
@@ -443,7 +443,7 @@ public class CreateStudyAndDatasets01 {
                     datasetDescription, mimeType, arcType.mimeType(), null,
                     filename, exMethodCid, methodStep, source,
                     tags.toArray(new String[tags.size()]), record.specimenType,
-                    imageType, datasetDir, recursive, arcType);
+                    imageType, datasetDir, recursive, arcType, true);
             System.out.println("Created derived dataset: " + datasetCid
                     + " from " + source + ".");
             return datasetCid;

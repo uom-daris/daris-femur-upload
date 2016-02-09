@@ -49,7 +49,8 @@ public class CreateStudyAndDatasets {
             /*
              * update study
              */
-            String studyCid = StudyUtil.findStudy(cxn, subjectCid + ".1", "2", null);
+            String studyCid = StudyUtil.findStudy(cxn, subjectCid + ".1", "2",
+                    null);
             StudyUtil.updateStudy(cxn, studyCid, studyName, studyName, record,
                     studyTags);
             System.out.println("Updated study " + studyCid);
@@ -73,7 +74,7 @@ public class CreateStudyAndDatasets {
                     datasetDescription, mimeType, arcType.mimeType(), null,
                     filename, exMethodCid, methodStep, source,
                     tags.toArray(new String[tags.size()]), record.specimenType,
-                    imageType, datasetDir, recursive, arcType);
+                    imageType, datasetDir, recursive, arcType, false);
             System.out.println("Created derived dataset: " + datasetCid
                     + " from " + source + ".");
             return datasetCid;
