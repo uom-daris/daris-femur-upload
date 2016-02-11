@@ -481,24 +481,47 @@ public class FemurUpload {
                 i += 2;
             } else if ("--name".equals(args[i])) {
                 name = StringUtil.trimDoubleQuotes(args[i + 1]);
+                if ("null".equalsIgnoreCase(name)) {
+                    name = null;
+                }
                 i += 2;
             } else if ("--description".equals(args[i])) {
                 description = StringUtil.trimDoubleQuotes(args[i + 1]);
+                if ("null".equalsIgnoreCase(description)) {
+                    description = null;
+                }
                 i += 2;
             } else if ("--type".equals(args[i])) {
                 type = args[i + 1];
+                if ("null".equalsIgnoreCase(type)) {
+                    type = null;
+                }
                 i += 2;
             } else if ("--specimen-type".equals(args[i])) {
                 specimenType = StringUtil.trimDoubleQuotes(args[i + 1]);
+                if ("null".equalsIgnoreCase(specimenType)) {
+                    specimenType = null;
+                }
                 i += 2;
             } else if ("--image-type".equals(args[i])) {
                 imageType = StringUtil.trimDoubleQuotes(args[i + 1]);
+                if ("null".equalsIgnoreCase(imageType)) {
+                    imageType = null;
+                }
                 i += 2;
             } else if ("--tags".equals(args[i])) {
-                tags = args[i + 1].split(",");
+                String t = StringUtil.trimDoubleQuotes(args[i + 1]);
+                if ("null".equalsIgnoreCase(t)) {
+                    tags = null;
+                } else {
+                    tags = t.split(",");
+                }
                 i += 2;
             } else if ("--filename".equals(args[i])) {
                 filename = StringUtil.trimDoubleQuotes(args[i + 1]);
+                if ("null".equalsIgnoreCase(filename)) {
+                    filename = null;
+                }
                 i += 2;
             } else {
                 System.err.println("Error: unexpected argument: " + args[i]);
@@ -541,24 +564,47 @@ public class FemurUpload {
                 i += 2;
             } else if ("--name".equals(args[i])) {
                 name = StringUtil.trimDoubleQuotes(args[i + 1]);
+                if ("null".equalsIgnoreCase(name)) {
+                    name = null;
+                }
                 i += 2;
             } else if ("--description".equals(args[i])) {
                 description = StringUtil.trimDoubleQuotes(args[i + 1]);
+                if ("null".equalsIgnoreCase(description)) {
+                    description = null;
+                }
                 i += 2;
             } else if ("--type".equals(args[i])) {
                 type = args[i + 1];
+                if ("null".equalsIgnoreCase(type)) {
+                    type = null;
+                }
                 i += 2;
             } else if ("--specimen-type".equals(args[i])) {
                 specimenType = StringUtil.trimDoubleQuotes(args[i + 1]);
+                if ("null".equalsIgnoreCase(specimenType)) {
+                    specimenType = null;
+                }
                 i += 2;
             } else if ("--image-type".equals(args[i])) {
                 imageType = StringUtil.trimDoubleQuotes(args[i + 1]);
+                if ("null".equalsIgnoreCase(imageType)) {
+                    imageType = null;
+                }
                 i += 2;
             } else if ("--tags".equals(args[i])) {
-                tags = StringUtil.trimDoubleQuotes(args[i + 1]).split(",");
+                String t = StringUtil.trimDoubleQuotes(args[i + 1]);
+                if ("null".equalsIgnoreCase(t)) {
+                    tags = null;
+                } else {
+                    tags = t.split(",");
+                }
                 i += 2;
             } else if ("--filename".equals(args[i])) {
                 filename = StringUtil.trimDoubleQuotes(args[i + 1]);
+                if ("null".equalsIgnoreCase(filename)) {
+                    filename = null;
+                }
                 i += 2;
             } else {
                 System.err.println("Error: unexpected argument: " + args[i]);
@@ -595,7 +641,12 @@ public class FemurUpload {
                 description = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
             } else if ("--tags".equals(args[i])) {
-                tags = StringUtil.trimDoubleQuotes(args[i + 1]).split(",");
+                String t = StringUtil.trimDoubleQuotes(args[i + 1]);
+                if ("null".equalsIgnoreCase(t)) {
+                    tags = null;
+                } else {
+                    tags = t.split(",");
+                }
                 i += 2;
             } else {
                 System.err.println(
