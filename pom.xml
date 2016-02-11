@@ -52,7 +52,7 @@
 							</descriptorRefs>
 							<archive>
 								<manifest>
-									<mainClass>vicnode.daris.femur.upload.CreateStudyAndDatasets</mainClass>
+									<mainClass>vicnode.daris.femur.upload.FemurUpload</mainClass>
 								</manifest>
 								<manifestEntries>
 									<App-Version>${project.version}</App-Version>

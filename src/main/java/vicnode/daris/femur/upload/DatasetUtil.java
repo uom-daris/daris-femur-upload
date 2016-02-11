@@ -21,9 +21,15 @@ public class DatasetUtil {
     public static String createDerivedDataset(ServerClient.Connection cxn,
             String pid, String[] inputDatasets, String name, String description,
             String type, String ctype, String lctype, String filename,
-            String methodId, String methodStep, String source, String[] tags,
-            String femurSpecimenType, String femurImageType, File f,
-            boolean recursive, ArcType arcType, boolean fillin) throws Throwable {
+            String source, String[] tags, String femurSpecimenType,
+            String femurImageType, File f, boolean recursive, ArcType arcType,
+            boolean fillin) throws Throwable {
+        XmlDoc.Element studyAE = cxn.execute("asset.get",
+                "<args><cid>" + pid + "</cid></args>", null, null)
+                .element("asset");
+        String exMethodId = studyAE.value("meta/daris:pssd-study/method");
+        String exMethodStep = studyAE
+                .value("meta/daris:pssd-study/method/@step");
         XmlStringWriter w = new XmlStringWriter();
         w.add("pid", pid);
         if (inputDatasets != null) {
@@ -51,12 +57,10 @@ public class DatasetUtil {
         if (filename != null) {
             w.add("filename", filename);
         }
-        if (methodId != null && methodStep != null) {
-            w.push("method");
-            w.add("id", methodId);
-            w.add("step", methodStep);
-            w.pop();
-        }
+        w.push("method");
+        w.add("id", exMethodId);
+        w.add("step", exMethodStep);
+        w.pop();
         if (source != null) {
             w.push("meta");
             w.push("mf-note");
@@ -86,91 +90,6 @@ public class DatasetUtil {
             }
         }
         return cid;
-    }
-
-    public static String createPrimaryDataset(ServerClient.Connection cxn,
-            String pid, String name, String description, String type,
-            String ctype, String lctype, String filename, String methodId,
-            String methodStep, String source, String[] tags,
-            String femurSpecimenType, String femurImageType, File f,
-            boolean recursive, ArcType arcType) throws Throwable {
-        XmlStringWriter w = new XmlStringWriter();
-        w.add("pid", pid);
-        w.push("subject");
-        w.add("id", CidUtil.getSubjectCid(pid));
-        w.pop();
-        if (name != null) {
-            w.add("name", name);
-        }
-        if (description != null) {
-            w.add("description", description);
-        }
-        if (type != null) {
-            w.add("type", type);
-        }
-        if (ctype != null) {
-            w.add("ctype", ctype);
-        }
-        if (lctype != null) {
-            w.add("lctype", lctype);
-        }
-        w.add("fillin", true);
-        if (filename != null) {
-            w.add("filename", filename);
-        }
-        if (methodId != null && methodStep != null) {
-            w.push("method");
-            w.add("id", methodId);
-            w.add("step", methodStep);
-            w.pop();
-        }
-        if (source != null) {
-            w.push("meta");
-            w.push("mf-note");
-            w.add("note", "source: " + source);
-            w.pop();
-            if (femurSpecimenType != null || femurImageType != null) {
-                w.push("vicnode.daris:femur-dataset");
-                if (femurSpecimenType != null) {
-                    w.add("specimen-type", femurSpecimenType);
-                }
-                if (femurImageType != null) {
-                    w.add("image-type", femurImageType);
-                }
-                w.pop();
-            }
-            w.pop();
-        }
-        ServerClient.Input sci = null;
-        if (f != null) {
-            sci = createInput(f, recursive, arcType, source);
-        }
-        String cid = cxn.execute("om.pssd.dataset.primary.create", w.document(),
-                sci, null).value("id");
-        if (tags != null) {
-            for (String tag : tags) {
-                ObjectUtil.addObjectTag(cxn, cid, tag);
-            }
-        }
-        return cid;
-    }
-
-    private static String getVid(ServerClient.Connection cxn, String cid)
-            throws Throwable {
-        return cxn.execute("asset.get", "<cid>" + cid + "</cid>")
-                .value("asset/@vid");
-    }
-
-    public static String findDatasetBySource(ServerClient.Connection cxn,
-            String pid, String source) throws Throwable {
-        StringBuilder sb = new StringBuilder();
-        sb.append("cid starts with '").append(pid)
-                .append("' and xpath(mf-note/note)='source: ").append(source)
-                .append("'");
-        XmlStringWriter w = new XmlStringWriter();
-        w.add("where", sb.toString());
-        w.add("action", "get-cid");
-        return cxn.execute("asset.query", w.document()).value("cid");
     }
 
     private static ServerClient.Input createInput(File f, boolean recursive,
@@ -219,11 +138,118 @@ public class DatasetUtil {
         };
     }
 
+    public static String createPrimaryDataset(ServerClient.Connection cxn,
+            String pid, String name, String description, String type,
+            String ctype, String lctype, String filename, String source,
+            String[] tags, String femurSpecimenType, String femurImageType,
+            File f, boolean recursive, ArcType arcType, boolean fillin)
+                    throws Throwable {
+        XmlDoc.Element studyAE = cxn.execute("asset.get",
+                "<args><cid>" + pid + "</cid></args>", null, null)
+                .element("asset");
+        String exMethodId = studyAE.value("meta/daris:pssd-study/method");
+        String exMethodStep = studyAE
+                .value("meta/daris:pssd-study/method/@step");
+        XmlStringWriter w = new XmlStringWriter();
+        w.add("pid", pid);
+        w.push("subject");
+        w.add("id", CidUtil.getSubjectCid(pid));
+        w.pop();
+        if (name != null) {
+            w.add("name", name);
+        }
+        if (description != null) {
+            w.add("description", description);
+        }
+        if (type != null) {
+            w.add("type", type);
+        }
+        if (ctype != null) {
+            w.add("ctype", ctype);
+        }
+        if (lctype != null) {
+            w.add("lctype", lctype);
+        }
+        w.add("fillin", fillin);
+        if (filename != null) {
+            w.add("filename", filename);
+        }
+        w.push("method");
+        w.add("id", exMethodId);
+        w.add("step", exMethodStep);
+        w.pop();
+        if (source != null) {
+            w.push("meta");
+            w.push("mf-note");
+            w.add("note", "source: " + source);
+            w.pop();
+            if (femurSpecimenType != null || femurImageType != null) {
+                w.push("vicnode.daris:femur-dataset");
+                if (femurSpecimenType != null) {
+                    w.add("specimen-type", femurSpecimenType);
+                }
+                if (femurImageType != null) {
+                    w.add("image-type", femurImageType);
+                }
+                w.pop();
+            }
+            w.pop();
+        }
+        ServerClient.Input sci = null;
+        if (f != null) {
+            sci = createInput(f, recursive, arcType, source);
+        }
+        String cid = cxn.execute("om.pssd.dataset.primary.create", w.document(),
+                sci, null).value("id");
+        if (tags != null) {
+            for (String tag : tags) {
+                ObjectUtil.addObjectTag(cxn, cid, tag);
+            }
+        }
+        return cid;
+    }
+
+    public static String findDatasetBySource(ServerClient.Connection cxn,
+            String pid, String source) throws Throwable {
+        StringBuilder sb = new StringBuilder();
+        sb.append("cid starts with '").append(pid)
+                .append("' and xpath(mf-note/note)='source: ").append(source)
+                .append("'");
+        XmlStringWriter w = new XmlStringWriter();
+        w.add("where", sb.toString());
+        w.add("action", "get-cid");
+        return cxn.execute("asset.query", w.document()).value("cid");
+    }
+
     public static XmlDoc.Element getDicomMetadata(ServerClient.Connection cxn,
             String cid) throws Throwable {
         String assetId = ObjectUtil.assetIdFromCid(cxn, cid);
         return cxn.execute("dicom.metadata.get", "<id>" + assetId + "</id>",
                 null, null);
+    }
+
+    private static String getVid(ServerClient.Connection cxn, String cid)
+            throws Throwable {
+        return cxn.execute("asset.get", "<cid>" + cid + "</cid>")
+                .value("asset/@vid");
+    }
+
+    public static void updateDerivedDataset(ServerClient.Connection cxn,
+            String cid, String[] inputDatasets, String name, String description,
+            String type, String ctype, String lctype, String filename,
+            String source, String[] tags, String femurSpecimenType,
+            String femurImageType) throws Throwable {
+        // TODO Auto-generated method stub
+
+    }
+
+    public static void updatePrimaryDataset(ServerClient.Connection cxn,
+            String cid, String name, String description, String type,
+            String ctype, String lctype, String filename, String source,
+            String[] tags, String femurSpecimenType, String femurImageType)
+                    throws Throwable {
+        // TODO Auto-generated method stub
+
     }
 
 }

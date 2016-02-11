@@ -120,8 +120,7 @@ public class CreateStudyAndDatasets01 {
                 .createDerivedDataset(cxn, studyCid, null, null,
                         "100 micrometre tiles sony camera", "tiff/series",
                         ArcType.zip.mimeType(), null,
-                        "100µm_tiles_sony_camera-" + name + ".zip", exMethodCid,
-                        "1", source,
+                        "100µm_tiles_sony_camera-" + name + ".zip", source,
                         new String[] { "microradiography",
                                 record.specimenType },
                         record.specimenType, "microradiography", dir, true,
@@ -203,8 +202,7 @@ public class CreateStudyAndDatasets01 {
                 .createDerivedDataset(cxn, studyCid, null, null,
                         "100 micrometre tiles spot camera", "tiff/series",
                         ArcType.zip.mimeType(), null,
-                        "100µm_tiles_spot_camera-" + name + ".zip", exMethodCid,
-                        "1", source,
+                        "100µm_tiles_spot_camera-" + name + ".zip", source,
                         new String[] { "microradiography",
                                 record.specimenType },
                         record.specimenType, "microradiography", dir, true,
@@ -267,11 +265,11 @@ public class CreateStudyAndDatasets01 {
                         "Spring8 raw data in Hipic format", "hipic/series",
                         ArcType.aar.mimeType(), null,
                         "Spring8_Sept_2008-" + name.toLowerCase() + ".aar",
-                        exMethodCid, "2", sourcePrimary,
+                        sourcePrimary,
                         new String[] { "Clinical CT", "microCT",
                                 record.specimenType },
                         record.specimenType, "microCT", dirPrimary, false,
-                        ArcType.aar);
+                        ArcType.aar, true);
                 System.out.println("Created primary dataset: "
                         + primaryDatasetCid + " from " + sourcePrimary + ".");
             }
@@ -287,7 +285,7 @@ public class CreateStudyAndDatasets01 {
                         "Reconstructed Spring8 data in TIFF format",
                         "tiff/series", ArcType.aar.mimeType(), null,
                         "Spring8_Sept_2008-" + name + "-Reconstructed.aar",
-                        exMethodCid, "2", sourceReconstructed,
+                        sourceReconstructed,
                         new String[] { "Clinical CT", "microCT",
                                 record.specimenType },
                         record.specimenType, "microCT", dirReconstructed, true,
@@ -373,10 +371,9 @@ public class CreateStudyAndDatasets01 {
             }
             datasetCid = DatasetUtil.createPrimaryDataset(cxn, studyCid,
                     datasetName, datasetDescription, mimeType,
-                    arcType.mimeType(), null, filename, exMethodCid, methodStep,
-                    source, tags.toArray(new String[tags.size()]),
-                    record.specimenType, imageType, datasetDir, recursive,
-                    arcType);
+                    arcType.mimeType(), null, filename, source,
+                    tags.toArray(new String[tags.size()]), record.specimenType,
+                    imageType, datasetDir, recursive, arcType, true);
             System.out.println("Created primary dataset: " + datasetCid
                     + " from " + source + ".");
             return datasetCid;
@@ -441,9 +438,9 @@ public class CreateStudyAndDatasets01 {
             datasetCid = DatasetUtil.createDerivedDataset(cxn, studyCid,
                     input == null ? null : new String[] { input }, datasetName,
                     datasetDescription, mimeType, arcType.mimeType(), null,
-                    filename, exMethodCid, methodStep, source,
-                    tags.toArray(new String[tags.size()]), record.specimenType,
-                    imageType, datasetDir, recursive, arcType, true);
+                    filename, source, tags.toArray(new String[tags.size()]),
+                    record.specimenType, imageType, datasetDir, recursive,
+                    arcType, true);
             System.out.println("Created derived dataset: " + datasetCid
                     + " from " + source + ".");
             return datasetCid;

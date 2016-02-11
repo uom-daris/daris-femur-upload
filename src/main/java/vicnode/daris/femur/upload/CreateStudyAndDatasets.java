@@ -35,7 +35,6 @@ public class CreateStudyAndDatasets {
                         "Could not find subject with specimen number: "
                                 + specimenNo);
             }
-            String exMethodCid = subjectCid + ".1";
             /*
              * check if datasets exist
              */
@@ -72,9 +71,9 @@ public class CreateStudyAndDatasets {
             datasetCid = DatasetUtil.createDerivedDataset(cxn, studyCid,
                     input == null ? null : new String[] { input }, datasetName,
                     datasetDescription, mimeType, arcType.mimeType(), null,
-                    filename, exMethodCid, methodStep, source,
-                    tags.toArray(new String[tags.size()]), record.specimenType,
-                    imageType, datasetDir, recursive, arcType, false);
+                    filename, source, tags.toArray(new String[tags.size()]),
+                    record.specimenType, imageType, datasetDir, recursive,
+                    arcType, false);
             System.out.println("Created derived dataset: " + datasetCid
                     + " from " + source + ".");
             return datasetCid;
