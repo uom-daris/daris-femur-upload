@@ -125,7 +125,7 @@ public class FemurUpload {
         String filename = null;
         String[] tags = null;
         String input = System.getProperty("user.dir");
-        String source = StringUtil.substringAfter(input, "/wliu5/Femur/");
+        String source = StringUtil.substringAfter(input, "/Femur/");
         if (source == null) {
             System.err.println("Failed to parse source from '" + input + "'.");
             System.exit(1);
