@@ -137,7 +137,8 @@ public class FemurUpload {
         String imageType = null;
         String filename = null;
         String[] tags = null;
-        String input = null;
+        String input = System.getProperty("user.dir");
+        System.out.println(input);
         boolean recursive = false;
         boolean fillin = false;
 
