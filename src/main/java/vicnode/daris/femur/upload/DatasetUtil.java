@@ -24,8 +24,8 @@ public class DatasetUtil {
             String source, String[] tags, String femurSpecimenType,
             String femurImageType, File f, boolean recursive, ArcType arcType,
             boolean fillin) throws Throwable {
-        XmlDoc.Element studyAE = cxn.execute("asset.get",
-                "<cid>" + pid + "</cid>", null, null)
+        XmlDoc.Element studyAE = cxn
+                .execute("asset.get", "<cid>" + pid + "</cid>", null, null)
                 .element("asset");
         String exMethodId = studyAE.value("meta/daris:pssd-study/method");
         String exMethodStep = studyAE
@@ -55,6 +55,9 @@ public class DatasetUtil {
         }
         w.add("fillin", fillin);
         if (filename != null) {
+            if (arcType != null && !filename.endsWith("." + arcType.ext())) {
+                filename = filename + "." + arcType.ext();
+            }
             w.add("filename", filename);
         }
         w.push("method");
@@ -144,8 +147,8 @@ public class DatasetUtil {
             String[] tags, String femurSpecimenType, String femurImageType,
             File f, boolean recursive, ArcType arcType, boolean fillin)
                     throws Throwable {
-        XmlDoc.Element studyAE = cxn.execute("asset.get",
-                "<cid>" + pid + "</cid>", null, null)
+        XmlDoc.Element studyAE = cxn
+                .execute("asset.get", "<cid>" + pid + "</cid>", null, null)
                 .element("asset");
         String exMethodId = studyAE.value("meta/daris:pssd-study/method");
         String exMethodStep = studyAE
@@ -172,6 +175,9 @@ public class DatasetUtil {
         }
         w.add("fillin", fillin);
         if (filename != null) {
+            if (arcType != null && !filename.endsWith("." + arcType.ext())) {
+                filename = filename + "." + arcType.ext();
+            }
             w.add("filename", filename);
         }
         w.push("method");
@@ -235,21 +241,113 @@ public class DatasetUtil {
     }
 
     public static void updateDerivedDataset(ServerClient.Connection cxn,
-            String cid, String[] inputDatasets, String name, String description,
-            String type, String ctype, String lctype, String filename,
-            String source, String[] tags, String femurSpecimenType,
-            String femurImageType) throws Throwable {
-        // TODO Auto-generated method stub
-
+            String cid, String name, String description, String type,
+            String filename, String source, String[] tags, String specimenType,
+            String imageType) throws Throwable {
+        XmlDoc.Element ae = cxn.execute("asset.get", "<cid>" + cid + "</cid>")
+                .element("asset");
+        String cext = ae.value("content/type/@ext");
+        XmlStringWriter w = new XmlStringWriter();
+        w.add("cid", cid);
+        if (type != null) {
+            w.add("type", type);
+        }
+        w.push("meta");
+        if (name != null || description != null) {
+            w.push("daris:pssd-object");
+            if (name != null) {
+                w.add("name", name);
+            }
+            if (description != null) {
+                w.add("description", description);
+            }
+            w.pop();
+        }
+        w.push("mf-note",
+                new String[] { "ns", "om.pssd.dataset", "tag", "pssd.meta" });
+        w.add("note", "source: " + source);
+        w.pop();
+        if (specimenType != null || imageType != null) {
+            w.push("vicnode.daris:femur-dataset", new String[] { "ns",
+                    "om.pssd.dataset", "tag", "pssd.meta" });
+            if (specimenType != null) {
+                w.add("specimen-type", specimenType);
+            }
+            if (imageType != null) {
+                w.add("image-type", imageType);
+            }
+            w.pop();
+        }
+        if (filename != null) {
+            if (cext != null && !filename.endsWith("." + cext)) {
+                filename = filename + "." + cext;
+            }
+            w.push("daris:pssd-filename");
+            w.add("original", filename);
+            w.pop();
+        }
+        w.pop();
+        cxn.execute("asset.set", w.document());
+        if (tags != null) {
+            for (String tag : tags) {
+                ObjectUtil.addObjectTag(cxn, cid, tag);
+            }
+        }
     }
 
     public static void updatePrimaryDataset(ServerClient.Connection cxn,
             String cid, String name, String description, String type,
-            String ctype, String lctype, String filename, String source,
-            String[] tags, String femurSpecimenType, String femurImageType)
-                    throws Throwable {
-        // TODO Auto-generated method stub
-
+            String filename, String source, String[] tags, String specimenType,
+            String imageType) throws Throwable {
+        XmlDoc.Element ae = cxn.execute("asset.get", "<cid>" + cid + "</cid>")
+                .element("asset");
+        String cext = ae.value("content/type/@ext");
+        XmlStringWriter w = new XmlStringWriter();
+        w.add("cid", cid);
+        if (type != null) {
+            w.add("type", type);
+        }
+        w.push("meta");
+        if (name != null || description != null) {
+            w.push("daris:pssd-object");
+            if (name != null) {
+                w.add("name", name);
+            }
+            if (description != null) {
+                w.add("description", description);
+            }
+            w.pop();
+        }
+        w.push("mf-note",
+                new String[] { "ns", "om.pssd.dataset", "tag", "pssd.meta" });
+        w.add("note", "source: " + source);
+        w.pop();
+        if (specimenType != null || imageType != null) {
+            w.push("vicnode.daris:femur-dataset", new String[] { "ns",
+                    "om.pssd.dataset", "tag", "pssd.meta" });
+            if (specimenType != null) {
+                w.add("specimen-type", specimenType);
+            }
+            if (imageType != null) {
+                w.add("image-type", imageType);
+            }
+            w.pop();
+        }
+        if (filename != null) {
+            if (cext != null && !filename.endsWith("." + cext)) {
+                filename = filename + "." + cext;
+            }
+            w.push("daris:pssd-filename");
+            w.add("original", filename);
+            w.pop();
+        }
+        w.pop();
+        cxn.execute("asset.set", w.document());
+        if (tags != null) {
+            for (String tag : tags) {
+                ObjectUtil.addObjectTag(cxn, cid, tag);
+            }
+        }
     }
 
 }

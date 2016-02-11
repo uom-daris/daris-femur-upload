@@ -354,8 +354,6 @@ public class FemurUpload {
                 System.out.println(
                         "        --description <description>     The description of the dataset.");
                 System.out.println(
-                        "        --source <source>               The source location of the dataset.");
-                System.out.println(
                         "        --type <type>                   The mime type of the dataset.");
                 System.out.println(
                         "        --ctype <type>                  The content mime type of the dataset.");
@@ -371,8 +369,6 @@ public class FemurUpload {
                         "        --tags <tag1,tag2>              The tags for the dataset. Separated with comma.");
                 System.out.println(
                         "        --atype <archive-type>          The content archive type. Must be aar or zip.");
-                System.out.println(
-                        "        --input <input-dir>             The path to the input directory.");
                 System.out.println(
                         "        --recursive                     If specified, include the input directory recursively.");
                 System.out.println(
@@ -389,8 +385,6 @@ public class FemurUpload {
                 System.out.println(
                         "        --description <description>     The description of the dataset.");
                 System.out.println(
-                        "        --source <source>               The source location of the dataset.");
-                System.out.println(
                         "        --type <type>                   The mime type of the dataset.");
                 System.out.println(
                         "        --ctype <type>                  The content mime type of the dataset.");
@@ -406,8 +400,6 @@ public class FemurUpload {
                         "        --tags <tag1,tag2>              The tags for the dataset. Separated with comma.");
                 System.out.println(
                         "        --atype <archive-type>          The content archive type. Must be aar or zip.");
-                System.out.println(
-                        "        --input <input-dir>             The path to the input directory.");
                 System.out.println(
                         "        --recursive                     If specified, include the input directory recursively.");
                 System.out.println(
@@ -434,13 +426,7 @@ public class FemurUpload {
                 System.out.println(
                         "        --description <description>     The description of the dataset.");
                 System.out.println(
-                        "        --source <source>               The source location of the dataset.");
-                System.out.println(
                         "        --type <type>                   The mime type of the dataset.");
-                System.out.println(
-                        "        --ctype <type>                  The content mime type of the dataset.");
-                System.out.println(
-                        "        --lctype <type>                 The logical content mime type of the dataset.");
                 System.out.println(
                         "        --specimen-type <specimen-type> The femur specimen type of the dataset.");
                 System.out.println(
@@ -455,19 +441,11 @@ public class FemurUpload {
                 System.out.println(
                         "        --cid <cid>                     The citeable id of the dataset.");
                 System.out.println(
-                        "        --input-cid <cid>               The citeable id of the input dataset.");
-                System.out.println(
                         "        --name <name>                   The name of the dataset.");
                 System.out.println(
                         "        --description <description>     The description of the dataset.");
                 System.out.println(
-                        "        --source <source>               The source location of the dataset.");
-                System.out.println(
                         "        --type <type>                   The mime type of the dataset.");
-                System.out.println(
-                        "        --ctype <type>                  The content mime type of the dataset.");
-                System.out.println(
-                        "        --lctype <type>                 The logical content mime type of the dataset.");
                 System.out.println(
                         "        --specimen-type <specimen-type> The femur specimen type of the dataset.");
                 System.out.println(
@@ -482,14 +460,16 @@ public class FemurUpload {
     }
 
     private static void updateDerivedDataset(String[] args) throws Throwable {
+        String input = System.getProperty("user.dir");
+        String source = StringUtil.substringAfter(input, "/Femur/");
+        if (source == null) {
+            System.err.println("Failed to parse source from '" + input + "'.");
+            System.exit(1);
+        }
         String cid = null;
-        String source = null;
-        String inputCid = null;
         String name = null;
         String description = null;
         String type = null;
-        String ctype = null;
-        String lctype = null;
         String specimenType = null;
         String imageType = null;
         String filename = null;
@@ -499,12 +479,6 @@ public class FemurUpload {
             if ("--cid".equals(args[i])) {
                 cid = args[i + 1];
                 i += 2;
-            } else if ("--input-cid".equals(args[i])) {
-                inputCid = args[i + 1];
-                i += 2;
-            } else if ("--source".equals(args[i])) {
-                source = StringUtil.trimDoubleQuotes(args[i + 1]);
-                i += 2;
             } else if ("--name".equals(args[i])) {
                 name = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
@@ -513,12 +487,6 @@ public class FemurUpload {
                 i += 2;
             } else if ("--type".equals(args[i])) {
                 type = args[i + 1];
-                i += 2;
-            } else if ("--ctype".equals(args[i])) {
-                ctype = args[i + 1];
-                i += 2;
-            } else if ("--lctype".equals(args[i])) {
-                lctype = args[i + 1];
                 i += 2;
             } else if ("--specimen-type".equals(args[i])) {
                 specimenType = StringUtil.trimDoubleQuotes(args[i + 1]);
@@ -544,23 +512,24 @@ public class FemurUpload {
         }
         ServerClient.Connection cxn = Server.connect();
         try {
-            DatasetUtil.updateDerivedDataset(cxn, cid,
-                    inputCid == null ? null : new String[] { inputCid }, name,
-                    description, type, ctype, lctype, filename, source, tags,
-                    specimenType, imageType);
+            DatasetUtil.updateDerivedDataset(cxn, cid, name, description, type,
+                    filename, source, tags, specimenType, imageType);
         } finally {
             Server.disconnect();
         }
     }
 
     private static void updatePrimaryDataset(String[] args) throws Throwable {
-        String source = null;
+        String input = System.getProperty("user.dir");
+        String source = StringUtil.substringAfter(input, "/Femur/");
+        if (source == null) {
+            System.err.println("Failed to parse source from '" + input + "'.");
+            System.exit(1);
+        }
         String cid = null;
         String name = null;
         String description = null;
         String type = null;
-        String ctype = null;
-        String lctype = null;
         String specimenType = null;
         String imageType = null;
         String filename = null;
@@ -570,9 +539,6 @@ public class FemurUpload {
             if ("--cid".equals(args[i])) {
                 cid = args[i + 1];
                 i += 2;
-            } else if ("--source".equals(args[i])) {
-                source = args[i + 1];
-                i += 2;
             } else if ("--name".equals(args[i])) {
                 name = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
@@ -581,12 +547,6 @@ public class FemurUpload {
                 i += 2;
             } else if ("--type".equals(args[i])) {
                 type = args[i + 1];
-                i += 2;
-            } else if ("--ctype".equals(args[i])) {
-                ctype = args[i + 1];
-                i += 2;
-            } else if ("--lctype".equals(args[i])) {
-                lctype = args[i + 1];
                 i += 2;
             } else if ("--specimen-type".equals(args[i])) {
                 specimenType = StringUtil.trimDoubleQuotes(args[i + 1]);
@@ -613,8 +573,7 @@ public class FemurUpload {
         ServerClient.Connection cxn = Server.connect();
         try {
             DatasetUtil.updatePrimaryDataset(cxn, cid, name, description, type,
-                    ctype, lctype, filename, source, tags, specimenType,
-                    imageType);
+                    filename, source, tags, specimenType, imageType);
         } finally {
             Server.disconnect();
         }
