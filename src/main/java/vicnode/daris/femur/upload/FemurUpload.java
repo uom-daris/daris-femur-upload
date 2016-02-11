@@ -303,6 +303,7 @@ public class FemurUpload {
     }
 
     public static void main(String[] args) throws Throwable {
+        System.out.println(System.getProperty("user.dir"));
         if (args == null || args.length < 2) {
             printUsage(null, null);
             System.exit(1);
