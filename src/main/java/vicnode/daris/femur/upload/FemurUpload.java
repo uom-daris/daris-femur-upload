@@ -40,10 +40,10 @@ public class FemurUpload {
                 inputCid = args[i + 1];
                 i += 2;
             } else if ("--name".equals(args[i])) {
-                name = args[i + 1];
+                name = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
             } else if ("--description".equals(args[i])) {
-                description = args[i + 1];
+                description = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
             } else if ("--type".equals(args[i])) {
                 type = args[i + 1];
@@ -58,16 +58,16 @@ public class FemurUpload {
                 atype = ArcType.valueOf(args[i + 1].toLowerCase());
                 i += 2;
             } else if ("--specimen-type".equals(args[i])) {
-                specimenType = args[i + 1];
+                specimenType = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
             } else if ("--image-type".equals(args[i])) {
-                imageType = args[i + 1];
+                imageType = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
             } else if ("--tags".equals(args[i])) {
-                tags = args[i + 1].split(",");
+                tags = StringUtil.trimDoubleQuotes(args[i + 1]).split(",");
                 i += 2;
             } else if ("--filename".equals(args[i])) {
-                filename = args[i + 1];
+                filename = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
             } else if ("--recursive".equals(args[i])) {
                 recursive = true;
@@ -138,10 +138,10 @@ public class FemurUpload {
                 pid = args[i + 1];
                 i += 2;
             } else if ("--name".equals(args[i])) {
-                name = args[i + 1];
+                name = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
             } else if ("--description".equals(args[i])) {
-                description = args[i + 1];
+                description = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
             } else if ("--type".equals(args[i])) {
                 type = args[i + 1];
@@ -156,16 +156,16 @@ public class FemurUpload {
                 atype = ArcType.valueOf(args[i + 1].toLowerCase());
                 i += 2;
             } else if ("--specimen-type".equals(args[i])) {
-                specimenType = args[i + 1];
+                specimenType = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
             } else if ("--image-type".equals(args[i])) {
-                imageType = args[i + 1];
+                imageType = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
             } else if ("--tags".equals(args[i])) {
-                tags = args[i + 1].split(",");
+                tags = StringUtil.trimDoubleQuotes(args[i + 1]).split(",");
                 i += 2;
             } else if ("--filename".equals(args[i])) {
-                filename = args[i + 1];
+                filename = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
             } else if ("--recursive".equals(args[i])) {
                 recursive = true;
@@ -222,10 +222,10 @@ public class FemurUpload {
                 specimenNo = args[i + 1];
                 i += 2;
             } else if ("--name".equals(args[i])) {
-                name = args[i + 1];
+                name = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
             } else if ("--description".equals(args[i])) {
-                description = args[i + 1];
+                description = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
             } else if ("--step".equals(args[i])) {
                 step = args[i + 1];
@@ -234,7 +234,7 @@ public class FemurUpload {
                 studyType = args[i + 1];
                 i += 2;
             } else if ("--tags".equals(args[i])) {
-                tags = args[i + 1].split(",");
+                tags = StringUtil.trimDoubleQuotes(args[i + 1]).split(",");
                 i += 2;
             } else if ("--check-existence".equals(args[i])) {
                 checkExistence = true;
@@ -503,13 +503,13 @@ public class FemurUpload {
                 inputCid = args[i + 1];
                 i += 2;
             } else if ("--source".equals(args[i])) {
-                source = args[i + 1];
+                source = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
             } else if ("--name".equals(args[i])) {
-                name = args[i + 1];
+                name = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
             } else if ("--description".equals(args[i])) {
-                description = args[i + 1];
+                description = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
             } else if ("--type".equals(args[i])) {
                 type = args[i + 1];
@@ -521,16 +521,16 @@ public class FemurUpload {
                 lctype = args[i + 1];
                 i += 2;
             } else if ("--specimen-type".equals(args[i])) {
-                specimenType = args[i + 1];
+                specimenType = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
             } else if ("--image-type".equals(args[i])) {
-                imageType = args[i + 1];
+                imageType = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
             } else if ("--tags".equals(args[i])) {
                 tags = args[i + 1].split(",");
                 i += 2;
             } else if ("--filename".equals(args[i])) {
-                filename = args[i + 1];
+                filename = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
             } else {
                 System.err.println("Error: unexpected argument: " + args[i]);
@@ -574,10 +574,10 @@ public class FemurUpload {
                 source = args[i + 1];
                 i += 2;
             } else if ("--name".equals(args[i])) {
-                name = args[i + 1];
+                name = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
             } else if ("--description".equals(args[i])) {
-                description = args[i + 1];
+                description = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
             } else if ("--type".equals(args[i])) {
                 type = args[i + 1];
@@ -589,16 +589,16 @@ public class FemurUpload {
                 lctype = args[i + 1];
                 i += 2;
             } else if ("--specimen-type".equals(args[i])) {
-                specimenType = args[i + 1];
+                specimenType = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
             } else if ("--image-type".equals(args[i])) {
-                imageType = args[i + 1];
+                imageType = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
             } else if ("--tags".equals(args[i])) {
-                tags = args[i + 1].split(",");
+                tags = StringUtil.trimDoubleQuotes(args[i + 1]).split(",");
                 i += 2;
             } else if ("--filename".equals(args[i])) {
-                filename = args[i + 1];
+                filename = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
             } else {
                 System.err.println("Error: unexpected argument: " + args[i]);
@@ -630,13 +630,13 @@ public class FemurUpload {
                 cid = args[i + 1];
                 i += 2;
             } else if ("--name".equals(args[i])) {
-                name = args[i + 1];
+                name = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
             } else if ("--description".equals(args[i])) {
-                description = args[i + 1];
+                description = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
             } else if ("--tags".equals(args[i])) {
-                tags = args[i + 1].split(",");
+                tags = StringUtil.trimDoubleQuotes(args[i + 1]).split(",");
                 i += 2;
             } else {
                 System.err.println(

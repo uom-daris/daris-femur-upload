@@ -48,6 +48,22 @@ public class StringUtil {
         }
     }
 
+    public static String trimDoubleQuotes(String s) {
+        if (s != null && s.startsWith("\"") && s.endsWith("\"")) {
+            return s.substring(1, s.length() - 1);
+        } else {
+            return s;
+        }
+    }
+
+    public static String trimSingleQuotes(String s) {
+        if (s != null && s.startsWith("'") && s.endsWith("'")) {
+            return s.substring(1, s.length() - 1);
+        } else {
+            return s;
+        }
+    }
+
     public static void main(String[] args) {
         // System.out.println(trimNonDigits("mfc597p"));
     }
