@@ -11,7 +11,6 @@ public class FemurUpload {
     public static final String PROJECT_CID = "1128.1.1";
 
     private static String createDerivedDataset(String[] args) throws Throwable {
-        String source = null;
         String pid = null;
         String inputCid = null;
         String name = null;
@@ -24,16 +23,18 @@ public class FemurUpload {
         String imageType = null;
         String filename = null;
         String[] tags = null;
-        String input = null;
+        String input = System.getProperty("user.dir");
+        String source = StringUtil.substringAfter(input, "/wliu5/Femur/");
+        if (source == null) {
+            System.err.println("Failed to parse source from '" + input + "'.");
+            System.exit(1);
+        }
         boolean recursive = false;
         boolean fillin = false;
 
         for (int i = 0; i < args.length;) {
             if ("--pid".equals(args[i])) {
                 pid = args[i + 1];
-                i += 2;
-            } else if ("--source".equals(args[i])) {
-                source = args[i + 1];
                 i += 2;
             } else if ("--input-cid".equals(args[i])) {
                 inputCid = args[i + 1];
@@ -68,9 +69,6 @@ public class FemurUpload {
             } else if ("--filename".equals(args[i])) {
                 filename = args[i + 1];
                 i += 2;
-            } else if ("--input".equals(args[i])) {
-                input = args[i + 1];
-                i += 2;
             } else if ("--recursive".equals(args[i])) {
                 recursive = true;
                 i++;
@@ -84,16 +82,6 @@ public class FemurUpload {
         }
         if (pid == null) {
             System.err.println("Error: missing argument --pid");
-            printUsage("create", "derivation");
-            System.exit(1);
-        }
-        if (source == null) {
-            System.err.println("Error: missing argument --pid");
-            printUsage("create", "derivation");
-            System.exit(1);
-        }
-        if (input == null) {
-            System.err.println("Error: missing input file/directory.");
             printUsage("create", "derivation");
             System.exit(1);
         }
@@ -125,7 +113,6 @@ public class FemurUpload {
     }
 
     private static String createPrimaryDataset(String[] args) throws Throwable {
-        String source = null;
         String pid = null;
         String name = null;
         String description = null;
@@ -138,16 +125,17 @@ public class FemurUpload {
         String filename = null;
         String[] tags = null;
         String input = System.getProperty("user.dir");
-        System.out.println(input);
+        String source = StringUtil.substringAfter(input, "/wliu5/Femur/");
+        if (source == null) {
+            System.err.println("Failed to parse source from '" + input + "'.");
+            System.exit(1);
+        }
         boolean recursive = false;
         boolean fillin = false;
 
         for (int i = 0; i < args.length;) {
             if ("--pid".equals(args[i])) {
                 pid = args[i + 1];
-                i += 2;
-            } else if ("--source".equals(args[i])) {
-                source = args[i + 1];
                 i += 2;
             } else if ("--name".equals(args[i])) {
                 name = args[i + 1];
@@ -179,9 +167,6 @@ public class FemurUpload {
             } else if ("--filename".equals(args[i])) {
                 filename = args[i + 1];
                 i += 2;
-            } else if ("--input".equals(args[i])) {
-                input = args[i + 1];
-                i += 2;
             } else if ("--recursive".equals(args[i])) {
                 recursive = true;
                 i++;
@@ -195,16 +180,6 @@ public class FemurUpload {
         }
         if (pid == null) {
             System.err.println("Error: missing argument --pid");
-            printUsage("create", "derivation");
-            System.exit(1);
-        }
-        if (source == null) {
-            System.err.println("Error: missing argument --pid");
-            printUsage("create", "derivation");
-            System.exit(1);
-        }
-        if (input == null) {
-            System.err.println("Error: missing input file/directory.");
             printUsage("create", "derivation");
             System.exit(1);
         }
@@ -303,7 +278,6 @@ public class FemurUpload {
     }
 
     public static void main(String[] args) throws Throwable {
-        System.out.println(System.getProperty("user.dir"));
         if (args == null || args.length < 2) {
             printUsage(null, null);
             System.exit(1);

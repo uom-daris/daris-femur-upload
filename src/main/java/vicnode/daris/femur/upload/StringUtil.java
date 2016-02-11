@@ -39,6 +39,14 @@ public class StringUtil {
         return null;
     }
 
+    public static String substringAfter(String s, String cs) {
+        int idx = s.indexOf(cs);
+        if (idx >= 0) {
+            return s.substring(idx + cs.length());
+        }
+        return null;
+    }
+
     public static void main(String[] args) {
         System.out.println(trimNonDigits("mfc597p"));
     }
