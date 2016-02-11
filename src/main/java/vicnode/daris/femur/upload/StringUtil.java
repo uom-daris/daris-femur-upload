@@ -42,12 +42,19 @@ public class StringUtil {
     public static String substringAfter(String s, String cs) {
         int idx = s.indexOf(cs);
         if (idx >= 0) {
-            return s.substring(idx + cs.length());
+            String ss = s.substring(idx + cs.length());
+            System.out.println(ss);
+            return ss;
+        } else {
+            System.out.println("null");
+            return null;
         }
-        return null;
     }
 
     public static void main(String[] args) {
-        System.out.println(trimNonDigits("mfc597p"));
+        // System.out.println(trimNonDigits("mfc597p"));
+        System.out.println(substringAfter(
+                "/mnt/VolumeStorage/Femur/MFC Xtreme pQCT data 2014 etc/MFC_BATCH3/370-00004442-00016303/Original_DCM/BMP",
+                "/Femur/"));
     }
 }
