@@ -41,6 +41,9 @@ public class StringUtil {
 
     public static String substringAfter(String s, String cs) {
         int idx = s.indexOf(cs);
+        System.out.println(s);
+        System.out.println(cs);
+        System.out.println(idx);
         if (idx >= 0) {
             String ss = s.substring(idx + cs.length());
             System.out.println(ss);
