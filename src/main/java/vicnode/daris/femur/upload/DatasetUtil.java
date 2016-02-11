@@ -25,7 +25,7 @@ public class DatasetUtil {
             String femurImageType, File f, boolean recursive, ArcType arcType,
             boolean fillin) throws Throwable {
         XmlDoc.Element studyAE = cxn.execute("asset.get",
-                "<args><cid>" + pid + "</cid></args>", null, null)
+                "<cid>" + pid + "</cid>", null, null)
                 .element("asset");
         String exMethodId = studyAE.value("meta/daris:pssd-study/method");
         String exMethodStep = studyAE
@@ -145,7 +145,7 @@ public class DatasetUtil {
             File f, boolean recursive, ArcType arcType, boolean fillin)
                     throws Throwable {
         XmlDoc.Element studyAE = cxn.execute("asset.get",
-                "<args><cid>" + pid + "</cid></args>", null, null)
+                "<cid>" + pid + "</cid>", null, null)
                 .element("asset");
         String exMethodId = studyAE.value("meta/daris:pssd-study/method");
         String exMethodStep = studyAE
