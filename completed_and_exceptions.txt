@@ -1,7 +1,8 @@
 Completed:
+
 100 micrometre sections                                           ## See Exceptions
 APS_March_2007__SP-8_07-2006_and_11-2007/SPring-8 Sept 2008       ## See Exceptions
-Cambridge Xtreme                                                  ## NOTE : missing study date (use acquisition data -> study date before dicom ingest).
+Cambridge Xtreme                                                  ## [missing study date (use acquisition data -> study date before dicom ingest).]
 MFC Xtreme pQCT data 2014 etc/MFC_BATCH1
 MFC Xtreme pQCT data 2014 etc/MFC_BATCH2
 MFC Xtreme pQCT data 2014 etc/MFC_BATCH3
@@ -10,11 +11,16 @@ MFC Xtreme pQCT data 2014 etc/MFC_BATCH5
 MFC Xtreme pQCT data 2014 etc/MFC_BATCH6
 
 Exceptions: 
+
 100 micrometre sections/Tiles Spot camera/3mm_circle.roi
 APS_March_2007__SP-8_07-2006_and_11-2007/APS Chicago March 2007
 APS_March_2007__SP-8_07-2006_and_11-2007/SPring-8 Sept 2008/Cal_standards
 APS_March_2007__SP-8_07-2006_and_11-2007/SPring-8 Sept 2008/Programs
+MFC Xtreme pQCT data 2014 etc/IMVS/NOF cores
+
 
 TO FIX:
 MFC Xtreme pQCT data 2014 etc/MFC_BATCH4/Second_Position/412-00004447-00016338-2ndPOS
+
+
 

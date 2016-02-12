@@ -39,6 +39,9 @@ public class FemurUpload {
             } else if ("--input-cid".equals(args[i])) {
                 inputCid = args[i + 1];
                 i += 2;
+                if ("null".equalsIgnoreCase(inputCid)) {
+                    inputCid = null;
+                }
             } else if ("--name".equals(args[i])) {
                 name = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
@@ -209,7 +212,7 @@ public class FemurUpload {
 
     }
 
-    private static void createStudy(String[] args) throws Throwable {
+    private static String createStudy(String[] args) throws Throwable {
         String specimenNo = null;
         String name = null;
         String description = null;
@@ -265,13 +268,15 @@ public class FemurUpload {
         }
         ServerClient.Connection cxn = Server.connect();
         try {
+            String studyCid;
             if (checkExistence) {
-                StudyUtil.findOrCreateStudy(cxn, exMethodId, step, name,
-                        description, record, tags);
+                studyCid = StudyUtil.findOrCreateStudy(cxn, exMethodId, step,
+                        name, description, record, tags);
             } else {
-                StudyUtil.createStudy(cxn, exMethodId, step, name, description,
-                        record, tags);
+                studyCid = StudyUtil.createStudy(cxn, exMethodId, step, name,
+                        description, record, tags);
             }
+            return studyCid;
         } finally {
             Server.disconnect();
         }
@@ -286,11 +291,17 @@ public class FemurUpload {
         String objectType = args[1];
         if ("create".equalsIgnoreCase(action)) {
             if ("study".equalsIgnoreCase(objectType)) {
-                createStudy(Arrays.copyOfRange(args, 2, args.length));
+                String cid = createStudy(
+                        Arrays.copyOfRange(args, 2, args.length));
+                System.out.println("Created study: " + cid);
             } else if ("primary".equalsIgnoreCase(objectType)) {
-                createPrimaryDataset(Arrays.copyOfRange(args, 2, args.length));
+                String cid = createPrimaryDataset(
+                        Arrays.copyOfRange(args, 2, args.length));
+                System.out.println("Created primary dataset: " + cid);
             } else if ("derivation".equalsIgnoreCase(objectType)) {
-                createDerivedDataset(Arrays.copyOfRange(args, 2, args.length));
+                String cid = createDerivedDataset(
+                        Arrays.copyOfRange(args, 2, args.length));
+                System.out.println("Created derivated dataset: " + cid);
             } else {
                 System.err.println("Error: invalid object type: " + objectType);
                 printUsage("create", null);
