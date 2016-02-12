@@ -183,13 +183,13 @@ public class FemurUpload {
         }
         if (pid == null) {
             System.err.println("Error: missing argument --pid");
-            printUsage("create", "derivation");
+            printUsage("create", "primary");
             System.exit(1);
         }
         File f = new File(input);
         if (!f.exists()) {
             System.err.println("Error: " + input + " does not exist.");
-            printUsage("create", "derivation");
+            printUsage("create", "primary");
             System.exit(1);
         }
         ServerClient.Connection cxn = Server.connect();
