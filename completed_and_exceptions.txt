@@ -5,9 +5,9 @@ Cambridge Xtreme                                                  ## NOTE : miss
 MFC Xtreme pQCT data 2014 etc/MFC_BATCH1
 MFC Xtreme pQCT data 2014 etc/MFC_BATCH2
 MFC Xtreme pQCT data 2014 etc/MFC_BATCH3
-MFC Xtreme pQCT data 2014 etc/MFC_BATCH4 (all dicom done except 412 sec-pos)                
-MFC Xtreme pQCT data 2014 etc/MFC_BATCH5 (all dicom done)
-MFC Xtreme pQCT data 2014 etc/MFC_BATCH6 (all dicom done)
+MFC Xtreme pQCT data 2014 etc/MFC_BATCH4 (all done except 412 sec-pos dicom)                
+MFC Xtreme pQCT data 2014 etc/MFC_BATCH5
+MFC Xtreme pQCT data 2014 etc/MFC_BATCH6
 
 Exceptions: 
 100 micrometre sections/Tiles Spot camera/3mm_circle.roi
@@ -17,7 +17,4 @@ APS_March_2007__SP-8_07-2006_and_11-2007/SPring-8 Sept 2008/Programs
 
 TO FIX:
 MFC Xtreme pQCT data 2014 etc/MFC_BATCH4/Second_Position/412-00004447-00016338-2ndPOS
-MFC Xtreme pQCT data 2014 etc/MFC_BATCH3/370-00004442-00016303/Original_DCM/BMP
 
-
-NOW: 412 sec dicom; 422 meta...

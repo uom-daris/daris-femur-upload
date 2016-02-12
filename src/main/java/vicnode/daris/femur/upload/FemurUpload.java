@@ -230,8 +230,8 @@ public class FemurUpload {
             } else if ("--step".equals(args[i])) {
                 step = args[i + 1];
                 i += 2;
-            } else if ("--type".equals(args[i])) {
-                studyType = args[i + 1];
+            } else if ("--study-type".equals(args[i])) {
+                studyType = StringUtil.trimDoubleQuotes(args[i + 1]);
                 i += 2;
             } else if ("--tags".equals(args[i])) {
                 tags = StringUtil.trimDoubleQuotes(args[i + 1]).split(",");
