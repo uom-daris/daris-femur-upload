@@ -356,8 +356,7 @@ public class FemurUpload {
                         "        --tags <tag1,tag2>              The tags for the study. Separated with comma.");
                 System.out.println(
                         "        --check-existence               If given it will check for existing study and ignore if the study with the same name exists.");
-            }
-            if ("primary".equalsIgnoreCase(objectType)) {
+            } else if ("primary".equalsIgnoreCase(objectType)) {
                 System.out.println(
                         "        --pid <study-cid>               The citeable id of the parent study.");
                 System.out.println(
@@ -385,8 +384,7 @@ public class FemurUpload {
                 System.out.println(
                         "        --fillin                        If specified, fill in the cid gap when creating dataset.");
 
-            }
-            if ("derivation".equalsIgnoreCase(objectType)) {
+            } else if ("derivation".equalsIgnoreCase(objectType)) {
                 System.out.println(
                         "        --pid <study-cid>               The citeable id of the parent study.");
                 System.out.println(
@@ -428,8 +426,7 @@ public class FemurUpload {
                 System.out.println(
                         "        --tags <tag1,tag2>              The tags for the dataset. Separated with comma.");
 
-            }
-            if ("primary".equalsIgnoreCase(objectType)) {
+            } else if ("primary".equalsIgnoreCase(objectType)) {
                 System.out.println(
                         "        --cid <cid>                     The citeable id of the dataset.");
                 System.out.println(
@@ -447,8 +444,7 @@ public class FemurUpload {
                 System.out.println(
                         "        --tags <tag1,tag2>              The tags for the dataset. Separated with comma.");
 
-            }
-            if ("derivation".equalsIgnoreCase(objectType)) {
+            } else if ("derivation".equalsIgnoreCase(objectType)) {
                 System.out.println(
                         "        --cid <cid>                     The citeable id of the dataset.");
                 System.out.println(
