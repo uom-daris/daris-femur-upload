@@ -263,10 +263,6 @@ public class DatasetUtil {
             }
             w.pop();
         }
-        w.push("mf-note",
-                new String[] { "ns", "om.pssd.dataset", "tag", "pssd.meta" });
-        w.add("note", "source: " + source);
-        w.pop();
         if (specimenType != null || imageType != null) {
             w.push("vicnode.daris:femur-dataset", new String[] { "ns",
                     "om.pssd.dataset", "tag", "pssd.meta" });
@@ -286,6 +282,10 @@ public class DatasetUtil {
             w.add("original", filename);
             w.pop();
         }
+        w.push("mf-note",
+                new String[] { "ns", "om.pssd.dataset", "tag", "pssd.meta" });
+        w.add("note", "source: " + source);
+        w.pop();
         w.pop();
         cxn.execute("asset.set", w.document());
         if (tags != null) {
