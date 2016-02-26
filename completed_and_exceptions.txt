@@ -2,13 +2,10 @@ Completed:
 
 100 micrometre sections                                           ## See Exceptions
 APS_March_2007__SP-8_07-2006_and_11-2007/SPring-8 Sept 2008       ## See Exceptions
+SPring-8_Nov_2007_1                                               ## See Exceptions
 Cambridge Xtreme                                                  ## [missing study date (use acquisition data -> study date before dicom ingest).]
-MFC Xtreme pQCT data 2014 etc/MFC_BATCH1
-MFC Xtreme pQCT data 2014 etc/MFC_BATCH2
-MFC Xtreme pQCT data 2014 etc/MFC_BATCH3
-MFC Xtreme pQCT data 2014 etc/MFC_BATCH4 (all done except 412 sec-pos dicom)                
-MFC Xtreme pQCT data 2014 etc/MFC_BATCH5
-MFC Xtreme pQCT data 2014 etc/MFC_BATCH6
+MFC Xtreme pQCT data 2014 etc                                     ## See Exceptions
+
 
 Exceptions: 
 
@@ -16,11 +13,16 @@ Exceptions:
 APS_March_2007__SP-8_07-2006_and_11-2007/APS Chicago March 2007
 APS_March_2007__SP-8_07-2006_and_11-2007/SPring-8 Sept 2008/Cal_standards
 APS_March_2007__SP-8_07-2006_and_11-2007/SPring-8 Sept 2008/Programs
+SPring-8_Nov_2007_1/SPring8 Nov 2007/Cal_standards
 MFC Xtreme pQCT data 2014 etc/IMVS/NOF cores
-
+MFC Xtreme pQCT data 2014 etc/Mineral density distribution/*.ffr
+MFC Xtreme pQCT data 2014 etc/Mineral density distribution/Phantom250/
+MFC Xtreme pQCT data 2014 etc/Mineral density distribution/Phantom750/
 
 TO FIX:
-MFC Xtreme pQCT data 2014 etc/MFC_BATCH4/Second_Position/412-00004447-00016338-2ndPOS
 
 
 
+Confirmed Duplicates:
+MFC Xtreme pQCT data 2014 etc/MFC_BATCH7/508-00004718-00017948
+MFC Xtreme pQCT data 2014 etc/MFC_BATCH8/508-00004718-00017948
