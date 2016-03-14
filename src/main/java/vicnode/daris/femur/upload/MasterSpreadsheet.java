@@ -121,6 +121,7 @@ public class MasterSpreadsheet
             weight = readFloatCellValue(row, 5);
             String st = readStringCellValue(row, 6);
             if (st != null) {
+                st = st.trim();
                 if (st.startsWith("OA")) {
                     st = "OA" + st.substring(2).toLowerCase();
                 } else {
